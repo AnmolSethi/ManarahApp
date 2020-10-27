@@ -99,6 +99,7 @@ class BaseScreen extends Component {
       refreshing: false,
       itemDetails: null,
       itemLists: [],
+      tagsList: [],
       itemListNotEnd: false,
       fetchFinished: false,
       player: this.player.track !== null ? true : false,
@@ -127,6 +128,7 @@ class BaseScreen extends Component {
     this.loadDownloads();
     this.player.updateComponent(this);
     this.loadDetails();
+    this.loadTags();
   }
 
   componentWillMount() {}
@@ -860,6 +862,21 @@ class BaseScreen extends Component {
 
           this.loadDownloads();
         }
+      });
+    });
+  }
+
+  loadTags() {
+    Api.get("get/trandingtag", {
+      userid: this.props.userid,
+      key: this.props.apikey,
+      limit: 10,
+    }).then((result) => {
+      console.log(result);
+      let lists = [];
+      lists.push(...result);
+      this.updateState({
+        tagsList: lists,
       });
     });
   }

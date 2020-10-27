@@ -112,7 +112,6 @@ class DisplayComponent extends BaseScreen {
     render() {
         switch (this.state.displayType) {
             case 'horizontal-grid':
-
                 return this.minContent(<FlatGrid
                     keyExtractor={(item) => item.id}
                     items={this.state.itemLists}

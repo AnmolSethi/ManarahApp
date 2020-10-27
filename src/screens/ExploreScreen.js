@@ -1,25 +1,21 @@
 import React from "react";
 import BaseScreen from "../utils/BaseScreen";
-import { Platform, View, Text } from "react-native";
-import {
-  Container,
-  Icon,
-  Content,
-  Item,
-  Input,
-  Header,
-  Tab,
-  Tabs,
-  ScrollableTab,
-} from "native-base";
+import { View, Text } from "react-native";
+import { Container, Icon, Item, Input, Header } from "native-base";
 import lang from "../utils/lang";
 import { connect } from "react-redux";
-import light from "../themes/light";
 import DisplayComponent from "../components/DisplayComponent";
 import PeopleComponent from "../components/PeopleComponent";
 import AlbumComponent from "../components/AlbumComponent";
 import { StyleSheet } from "react-native";
 import { ScrollView } from "react-native";
+import { Button } from "react-native";
+import Api from "../api";
+import { FlatGrid } from "react-native-super-grid";
+
+// http://manarahapp.com/?userid=AnmolSethi&key=o0q0aOmm4M0JEA&p=api/o0q0aOmm4M0JEA/load/tracks&type=charts-top&limit=50&offset=0&type_id=all/this-week
+
+// http://manarahapp.com/?userid=AnmolSethi&key=o0q0aOmm4M0JEA&p=api/o0q0aOmm4M0JEA/get/trandingtag&limit=10
 
 class ExploreScreen extends BaseScreen {
   constructor(props) {
@@ -29,7 +25,7 @@ class ExploreScreen extends BaseScreen {
       ...this.state,
       term: "",
     };
-    this.loadGenres();
+    this.loadTags();
   }
 
   render() {
@@ -67,7 +63,7 @@ class ExploreScreen extends BaseScreen {
         </Header>
 
         <ScrollView>
-          <View style={{ height: 330 }}>
+          <View style={{ height: 340 }}>
             <Text style={styles.text}>{"Top Artists"}</Text>
             <PeopleComponent
               noCache={true}
@@ -79,8 +75,7 @@ class ExploreScreen extends BaseScreen {
               limit={6}
             />
           </View>
-
-          <View style={{ height: 400 }}>
+          <View style={{ height: 410 }}>
             <Text style={styles.text}>{"Latest Tracks"}</Text>
             <DisplayComponent
               player={this.player}
@@ -92,11 +87,21 @@ class ExploreScreen extends BaseScreen {
             />
           </View>
 
-          <Text style={styles.text}>{"Top 50"}</Text>
+          <View style={{ height: 3160 }}>
+            <Text style={styles.text}>{"Top 50"}</Text>
+            <DisplayComponent
+              player={this.player}
+              navigation={this.props.navigation}
+              limit={50}
+              type="charts-top"
+              typeId="all/this-week"
+              offset={0}
+              displayType="small-list"
+            />
+          </View>
 
-          <View style={{ height: 220 }}>
+          <View style={{ height: 240 }}>
             <Text style={styles.text}>{"Playlists"}</Text>
-
             <AlbumComponent
               noCache={true}
               key={this.state.term}
@@ -107,7 +112,28 @@ class ExploreScreen extends BaseScreen {
             />
           </View>
 
-          <Text style={styles.text}>{"Trending Tags"}</Text>
+          <View style={{ height: 200 }}>
+            <Text style={styles.text}>{"Trending Tags"}</Text>
+            <FlatGrid
+              keyExtractor={(item) => item.id}
+              items={this.state.tagsList}
+              extraData={this.state}
+              itemDimension={100}
+              spacing={15}
+              style={{ backgroundColor: this.theme.contentVariationBg }}
+              onEndReachedThreshold={0.5}
+              fixed={false}
+              style={{ height: 200 }}
+              ListEmptyComponent={
+                !this.state.tagsList.length !== 0 ? (
+                  <Text />
+                ) : (
+                  <EmptyComponent text={lang.getString("no_playlists_found")} />
+                )
+              }
+              renderItem={({ item, index }) => this.displayGridItem(item)}
+            />
+          </View>
         </ScrollView>
 
         {/* {this.state.term === "" ? (
@@ -271,6 +297,19 @@ class ExploreScreen extends BaseScreen {
           </Tabs>
         )} */}
       </Container>
+    );
+  }
+
+  displayGridItem(item) {
+    if (item === false) return null;
+    return (
+      <View style={{ flex: 1 }}>
+        <Text
+          style={{ color: "white", fontWeight: "700", fontStyle: "italic" }}
+        >
+          {"#" + item.title}
+        </Text>
+      </View>
     );
   }
 
