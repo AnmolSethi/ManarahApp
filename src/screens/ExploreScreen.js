@@ -12,6 +12,7 @@ import { ScrollView } from "react-native";
 import { Button } from "react-native";
 import Api from "../api";
 import { FlatGrid } from "react-native-super-grid";
+import { TouchableOpacity } from "react-native";
 
 // http://manarahapp.com/?userid=AnmolSethi&key=o0q0aOmm4M0JEA&p=api/o0q0aOmm4M0JEA/load/tracks&type=charts-top&limit=50&offset=0&type_id=all/this-week
 
@@ -112,7 +113,7 @@ class ExploreScreen extends BaseScreen {
             />
           </View>
 
-          <View style={{ height: 200 }}>
+          <View style={{ height: 300 }}>
             <Text style={styles.text}>{"Trending Tags"}</Text>
             <FlatGrid
               keyExtractor={(item) => item.id}
@@ -303,13 +304,22 @@ class ExploreScreen extends BaseScreen {
   displayGridItem(item) {
     if (item === false) return null;
     return (
-      <View style={{ flex: 1 }}>
-        <Text
-          style={{ color: "white", fontWeight: "700", fontStyle: "italic" }}
-        >
-          {"#" + item.title}
-        </Text>
-      </View>
+      <Button
+        title={"#" + item.title}
+        style={{
+          color: "white",
+          fontWeight: "700",
+          fontStyle: "italic",
+          backgroundColor: "#000",
+        }}
+        onPress={() =>
+          this.props.navigation.navigate("showTags", {
+            typeId: item.title,
+          })
+        }
+      >
+        {"#" + item.title}
+      </Button>
     );
   }
 

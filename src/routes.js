@@ -18,32 +18,34 @@ import MessagesScreen from "./screens/MessagesScreen";
 import ChatScreen from "./screens/ChatScreen";
 import PricingScreen from "./screens/PricingScreen";
 import RadioScreen from "./screens/RadioScreen";
-import BlogScreen from "./screens/BlogScreen"
-import ArtistScreen from './screens/ArtistsScreen';
+import BlogScreen from "./screens/BlogScreen";
+import ArtistScreen from "./screens/ArtistsScreen";
 import GenresScreen from "./screens/GenresScreen";
+import ShowTagsScreen from "./screens/ShowTagsScreen";
 
 export default routes = {
-    start: HomeScreen,
-    auth: AuthScreen,
-    artist: ArtistScreen,
-    genres: GenresScreen,
-    explore: ExploreScreen,
-    feed: FeedScreen,
-    account: AccountScreen,
-    collection: CollectionScreen,
-    pro: ProScreen,
-    settings: SettingsScreen,
-    store: StoreScreen,
-    userprofile: UserProfileScreen,
-    welcome: WelcomeScreen,
-    player: PlayerScreen,
-    video: VideoScreen,
-    videoPlayer: VideoPlayerComponent,
-    albumProfile: AlbumProfileScreen,
-    notifications: NotificationScreen,
-    messages: MessagesScreen,
-    chat: ChatScreen,
-    pricing: PricingScreen,
-    radios: RadioScreen,
-    blogs: BlogScreen,
-}
+  start: HomeScreen,
+  auth: AuthScreen,
+  artist: ArtistScreen,
+  showTags: ShowTagsScreen,
+  genres: GenresScreen,
+  explore: ExploreScreen,
+  feed: FeedScreen,
+  account: AccountScreen,
+  collection: CollectionScreen,
+  pro: ProScreen,
+  settings: SettingsScreen,
+  store: StoreScreen,
+  userprofile: UserProfileScreen,
+  welcome: WelcomeScreen,
+  player: PlayerScreen,
+  video: VideoScreen,
+  videoPlayer: VideoPlayerComponent,
+  albumProfile: AlbumProfileScreen,
+  notifications: NotificationScreen,
+  messages: MessagesScreen,
+  chat: ChatScreen,
+  pricing: PricingScreen,
+  radios: RadioScreen,
+  blogs: BlogScreen,
+};

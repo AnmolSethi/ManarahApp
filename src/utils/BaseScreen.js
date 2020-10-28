@@ -100,6 +100,7 @@ class BaseScreen extends Component {
       itemDetails: null,
       itemLists: [],
       tagsList: [],
+      tagsListSongs: [],
       itemListNotEnd: false,
       fetchFinished: false,
       player: this.player.track !== null ? true : false,
