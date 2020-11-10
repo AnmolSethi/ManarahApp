@@ -7,6 +7,9 @@ import { Container, Content, Header } from "native-base";
 import { Platform } from "react-native";
 import DisplayComponent from "../components/DisplayComponent";
 import { ActivityIndicator } from "react-native";
+import { FlatGrid } from "react-native-super-grid";
+import EmptyComponent from "../utils/EmptyComponent";
+import { Button } from "react-native";
 
 class GenresScreen extends BaseScreen {
   constructor(props) {
@@ -80,12 +83,12 @@ class GenresScreen extends BaseScreen {
             backgroundColor: this.theme.accentColor,
             padding: 10,
             flexDirection: "row",
-            justifyContent: "center"
+            justifyContent: "center",
           }}
         >
           <Text
             style={{
-              color: "#fff",
+              color: this.theme.whiteColor,
               fontSize: 17,
               marginLeft: 10,
               marginTop: 3,
@@ -94,8 +97,55 @@ class GenresScreen extends BaseScreen {
             {lang.getString("genres")}
           </Text>
         </View>
+
+        <View>
+          <FlatGrid
+            keyExtractor={(item) => item.id}
+            items={this.state.genres}
+            extraData={this.state}
+            itemDimension={100}
+            spacing={15}
+            style={{
+              height: 200,
+            }}
+            onEndReachedThreshold={0.5}
+            fixed={false}
+            ListEmptyComponent={
+              !this.state.genres.length !== 0 ? (
+                <Text />
+              ) : (
+                <EmptyComponent text={lang.getString("no_playlists_found")} />
+              )
+            }
+            renderItem={({ item, index }) => this.displayGridItem(item)}
+          />
+        </View>
+
         <Content>{this.displayGenres()}</Content>
       </Container>
+    );
+  }
+
+  displayGridItem(item) {
+    if (item === false) return null;
+    return (
+      <View
+        style={{
+          backgroundColor: this.theme.brandPrimary,
+          padding: 10,
+          borderRadius: 10,
+        }}
+      >
+        <Text
+          style={{
+            color: this.theme.whiteColor,
+            fontSize: 18,
+            fontWeight: "700",
+          }}
+        >
+          {item.name}
+        </Text>
+      </View>
     );
   }
 }

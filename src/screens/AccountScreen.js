@@ -139,31 +139,6 @@ class AccountScreen extends BaseScreen {
                   </Badge>
                 ) : null}
               </Button>
-
-              <Button
-                transparent
-                onPress={() => {
-                  this.props.navigation.navigate("messages");
-                }}
-              >
-                <Icon
-                  style={{ color: "#fff" }}
-                  name="envelope"
-                  type="SimpleLineIcons"
-                />
-                {this.state.countMessages > 0 ? (
-                  <Badge
-                    danger
-                    style={{ position: "absolute", left: 0, top: 2 }}
-                  >
-                    <Text style={{ color: "#fff" }}>
-                      {this.state.countMessages > 99
-                        ? "99+"
-                        : this.state.countMessages}
-                    </Text>
-                  </Badge>
-                ) : null}
-              </Button>
             </View>
           ) : null}
         </View>
@@ -227,31 +202,6 @@ class AccountScreen extends BaseScreen {
                 </View>
               )}
             </View>
-
-            {this.props.userid !== null &&
-            this.props.setup.premium_account &&
-            this.state.details !== null &&
-            this.state.details.has_premium === 0 ? (
-              <View style={{ padding: 10 }}>
-                <Button
-                  onPress={() => {
-                    this.props.navigation.navigate("pricing", {
-                      component: this,
-                    });
-                  }}
-                  style={{
-                    backgroundColor: this.theme.brandPrimary,
-                    fontSize: 15,
-                  }}
-                >
-                  <Text
-                    style={{ color: "#fff", marginLeft: 20, marginRight: 20 }}
-                  >
-                    {lang.getString("go-premium")}
-                  </Text>
-                </Button>
-              </View>
-            ) : null}
           </View>
 
           <ListItem

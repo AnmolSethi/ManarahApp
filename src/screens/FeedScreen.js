@@ -43,7 +43,7 @@ class FeedScreen extends BaseScreen {
   render() {
     return this.show(
       <Container style={{ flex: 1 }}>
-        <Header
+        {/* <Header
           searchBar
           rounded
           hasTabs
@@ -134,7 +134,7 @@ class FeedScreen extends BaseScreen {
               </TouchableOpacity>
             </View>
           ) : null}
-        </Header>
+        </Header> */}
         <Tabs
           locked={Platform.OS === "ios" ? false : true}
           renderTabBar={() => (
@@ -173,44 +173,6 @@ class FeedScreen extends BaseScreen {
                   />
                 </View>
               ) : null}
-              <View style={{ backgroundColor: this.theme.contentVariationBg }}>
-                <View
-                  style={{
-                    borderBottomWidth: 10,
-                    borderBottomColor: this.theme.borderLineColor,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 13,
-                      color: this.theme.greyColor,
-                      marginLeft: 10,
-                      marginTop: 10,
-                    }}
-                  >
-                    {lang.getString("featured")}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 17,
-                      fontWeight: "500",
-                      margin: 10,
-                      color: this.theme.brandPrimary,
-                      marginBottom: 0,
-                    }}
-                  >
-                    {lang.getString("made-for-you")}
-                  </Text>
-                  <DisplayComponent
-                    player={this.player}
-                    navigation={this.props.navigation}
-                    limit={4}
-                    type="global-spotlight"
-                    typeId=""
-                    displayType="horizontal-grid"
-                  />
-                </View>
-              </View>
 
               <View style={{ backgroundColor: this.theme.contentVariationBg }}>
                 <View
@@ -241,7 +203,7 @@ class FeedScreen extends BaseScreen {
               </View>
             </Content>
           </Tab>
-          <Tab heading={lang.getString("stream").toUpperCase()}>
+          <Tab heading={lang.getString("feed").toUpperCase()}>
             <Content style={{ backgroundColor: this.theme.contentVariationBg }}>
               {this.props.userid === null || this.props.userid === "" ? (
                 <PleaseLoginComponent navigation={this.props.navigation} />

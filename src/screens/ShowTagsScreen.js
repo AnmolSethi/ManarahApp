@@ -185,7 +185,7 @@ class ShowTagsScreen extends BaseScreen {
               uri: item.art_md,
             }}
             resizeMode={FastImage.resizeMode.cover}
-          >
+          > 
             {this.props.setup.enable_store &&
             item.price !== "0.00" &&
             item.price > 0 ? (

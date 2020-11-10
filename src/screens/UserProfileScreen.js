@@ -27,6 +27,8 @@ import DisplayComponent from "../components/DisplayComponent";
 import AlbumComponent from "../components/AlbumComponent";
 import light from "../themes/light";
 import update from "immutability-helper/index";
+import { SocialIcon } from "react-native-elements";
+import { Linking } from "react-native";
 
 class UserProfileScreen extends BaseScreen {
   constructor(props) {
@@ -42,6 +44,7 @@ class UserProfileScreen extends BaseScreen {
       hasSpotlight: false,
     };
 
+    this.activeMenu = this.props.userid === this.item.id ? "userProfile" : "";
     this.confirmSpotlight();
   }
 
@@ -98,12 +101,10 @@ class UserProfileScreen extends BaseScreen {
           )}
 
           <Text
-            numberOfLines={1}
             style={{
               flex: 1,
-              color: this.theme.blackColor,
+              color: this.theme.whiteColor,
               fontSize: 20,
-              marginLeft: 10,
               alignItems: "center",
             }}
           >
@@ -121,7 +122,10 @@ class UserProfileScreen extends BaseScreen {
               >
                 <Icon
                   name="settings"
-                  style={{ color: this.theme.blackColor, fontSize: 30 }}
+                  style={{
+                    color: this.theme.whiteColor,
+                    fontSize: 30,
+                  }}
                 />
               </TouchableOpacity>
             </View>
@@ -159,8 +163,24 @@ class UserProfileScreen extends BaseScreen {
                 alignContent: "center",
               }}
             >
-              <Text style={styles.textRight}>{this.item.full_name}</Text>
-              <Text style={styles.textRightMedium}>{this.item.username}</Text>
+              <Text
+                style={{
+                  color: this.theme.blackColor,
+                  fontSize: 20,
+                  textAlign: "right",
+                }}
+              >
+                {this.item.full_name}
+              </Text>
+              <Text
+                style={{
+                  color: this.theme.blackColor,
+                  fontSize: 16,
+                  textAlign: "right",
+                }}
+              >
+                {this.item.username}
+              </Text>
             </View>
             <FastImage
               style={{
@@ -180,7 +200,7 @@ class UserProfileScreen extends BaseScreen {
             style={{
               margin: 20,
               padding: 20,
-              borderColor: this.theme.btnPrimaryColor,
+              borderColor: this.theme.blackColor,
               borderWidth: 1,
               borderRadius: 5,
             }}
@@ -217,7 +237,60 @@ class UserProfileScreen extends BaseScreen {
               flexDirection: "row",
               alignContent: "space-around",
               marginLeft: 20,
+              alignItems: "center",
               marginRight: 20,
+              marginBottom: 20,
+            }}
+          >
+            <SocialIcon
+              type="facebook"
+              onPress={() => {
+                if (this.item.facebook !== null) {
+                  Linking.openURL(this.item.facebook);
+                } else {
+                  Linking.openURL("http://manarahapp.com");
+                }
+              }}
+            ></SocialIcon>
+            <SocialIcon
+              type="twitter"
+              onPress={() => {
+                if (this.item.twitter !== null) {
+                  Linking.openURL(this.item.twitter);
+                } else {
+                  Linking.openURL("http://manarahapp.com");
+                }
+              }}
+            ></SocialIcon>
+            <SocialIcon
+              type="youtube"
+              onPress={() => {
+                if (this.item.youtube !== null) {
+                  Linking.openURL(this.item.youtube);
+                } else {
+                  Linking.openURL("http://manarahapp.com");
+                }
+              }}
+            ></SocialIcon>
+            <SocialIcon
+              type="vimeo"
+              onPress={() => {
+                if (this.item.vimeo !== null) {
+                  Linking.openURL(this.item.vimeo);
+                } else {
+                  Linking.openURL("http://manarahapp.com");
+                }
+              }}
+            ></SocialIcon>
+          </View>
+
+          <View
+            style={{
+              flexDirection: "row",
+              alignContent: "space-around",
+              marginLeft: 20,
+              marginRight: 20,
+              marginBottom: 20,
             }}
           >
             <View
@@ -226,13 +299,20 @@ class UserProfileScreen extends BaseScreen {
                 height: 80,
                 margin: 5,
                 padding: 20,
-                borderColor: this.theme.btnPrimaryColor,
+                borderColor: this.theme.blackColor,
                 borderWidth: 1,
                 borderRadius: 5,
               }}
             >
-              <Text style={styles.text}>
-                {"Following\n" + this.item.following}
+              <Text
+                style={{
+                  color: this.theme.blackColor,
+                  fontSize: 16,
+                  textAlign: "center",
+                }}
+              >
+                {"Following\n" +
+                  (this.item.following !== null ? this.item.following : 0)}
               </Text>
             </View>
 
@@ -242,13 +322,20 @@ class UserProfileScreen extends BaseScreen {
                 height: 80,
                 margin: 5,
                 padding: 20,
-                borderColor: this.theme.btnPrimaryColor,
+                borderColor: this.theme.blackColor,
                 borderWidth: 1,
                 borderRadius: 5,
               }}
             >
-              <Text style={styles.text}>
-                {"Followers\n" + this.item.followers}
+              <Text
+                style={{
+                  color: this.theme.blackColor,
+                  fontSize: 16,
+                  textAlign: "center",
+                }}
+              >
+                {"Followers\n" +
+                  (this.item.followers !== null ? this.item.followers : 0)}
               </Text>
             </View>
           </View>
@@ -401,24 +488,6 @@ class UserProfileScreen extends BaseScreen {
     });
   }
 }
-
-const styles = StyleSheet.create({
-  text: {
-    color: "white",
-    fontSize: 16,
-    textAlign: "center",
-  },
-  textRight: {
-    color: "white",
-    fontSize: 20,
-    textAlign: "right",
-  },
-  textRightMedium: {
-    color: "white",
-    fontSize: 16,
-    textAlign: "right",
-  },
-});
 
 export default connect((state) => {
   return {

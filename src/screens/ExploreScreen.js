@@ -64,8 +64,38 @@ class ExploreScreen extends BaseScreen {
         </Header>
 
         <ScrollView>
+          <View>
+            <Text
+              style={{
+                fontSize: 17,
+                fontWeight: "500",
+                margin: 10,
+                color: this.theme.brandPrimary,
+              }}
+            >
+              {lang.getString("made-for-you")}
+            </Text>
+            <DisplayComponent
+              player={this.player}
+              navigation={this.props.navigation}
+              limit={4}
+              type="global-spotlight"
+              typeId=""
+              displayType="horizontal-grid"
+            />
+          </View>
+
           <View style={{ height: 340 }}>
-            <Text style={styles.text}>{"Top Artists"}</Text>
+            <Text
+              style={{
+                fontSize: 17,
+                fontWeight: "500",
+                margin: 10,
+                color: this.theme.brandPrimary,
+              }}
+            >
+              {"Top Artists"}
+            </Text>
             <PeopleComponent
               noCache={true}
               key={this.state.term}
@@ -77,7 +107,16 @@ class ExploreScreen extends BaseScreen {
             />
           </View>
           <View style={{ height: 410 }}>
-            <Text style={styles.text}>{"Latest Tracks"}</Text>
+            <Text
+              style={{
+                fontSize: 17,
+                fontWeight: "500",
+                margin: 10,
+                color: this.theme.brandPrimary,
+              }}
+            >
+              {"Latest Tracks"}
+            </Text>
             <DisplayComponent
               player={this.player}
               navigation={this.props.navigation}
@@ -89,7 +128,16 @@ class ExploreScreen extends BaseScreen {
           </View>
 
           <View style={{ height: 3160 }}>
-            <Text style={styles.text}>{"Top 50"}</Text>
+            <Text
+              style={{
+                fontSize: 17,
+                fontWeight: "500",
+                margin: 10,
+                color: this.theme.brandPrimary,
+              }}
+            >
+              {"Top 50"}
+            </Text>
             <DisplayComponent
               player={this.player}
               navigation={this.props.navigation}
@@ -102,7 +150,16 @@ class ExploreScreen extends BaseScreen {
           </View>
 
           <View style={{ height: 240 }}>
-            <Text style={styles.text}>{"Playlists"}</Text>
+            <Text
+              style={{
+                fontSize: 17,
+                fontWeight: "500",
+                margin: 10,
+                color: this.theme.brandPrimary,
+              }}
+            >
+              {"Playlists"}
+            </Text>
             <AlbumComponent
               noCache={true}
               key={this.state.term}
@@ -114,7 +171,16 @@ class ExploreScreen extends BaseScreen {
           </View>
 
           <View style={{ height: 300 }}>
-            <Text style={styles.text}>{"Trending Tags"}</Text>
+            <Text
+              style={{
+                fontSize: 17,
+                fontWeight: "500",
+                margin: 10,
+                color: this.theme.brandPrimary,
+              }}
+            >
+              {"Trending Tags"}
+            </Text>
             <FlatGrid
               keyExtractor={(item) => item.id}
               items={this.state.tagsList}
