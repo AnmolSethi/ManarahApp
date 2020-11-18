@@ -6,7 +6,6 @@ import {
   Text,
   TouchableOpacity,
   Share,
-  ActivityIndicator,
   ImageBackground,
 } from "react-native";
 import { Container, Icon, Header, Content, Toast } from "native-base";
@@ -26,6 +25,7 @@ class PlayerScreen extends BaseScreen {
   type = "";
   typeId = "";
   needsPrapare = true;
+
   constructor(props) {
     super(props);
     this.item = this.props.navigation.getParam("item");
@@ -257,56 +257,6 @@ class PlayerScreen extends BaseScreen {
                       {this.item.likeCount}
                     </Text>
                   </View>
-
-                  {/* <View
-                    style={{
-                      alignSelf: "center",
-                      padding: 5,
-                      marginLeft: 15,
-                      flexDirection: "row",
-                    }}
-                  >
-                    <Icon
-                      name="bubble"
-                      type="SimpleLineIcons"
-                      style={{ fontSize: 23, color: this.theme.brandPrimary }}
-                    />
-                    <Text
-                      style={{
-                        color: this.theme.blackColor,
-                        marginLeft: 5,
-                        marginTop: 5,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {this.item.commentsCount}
-                    </Text>
-                  </View>
-
-                  <View
-                    style={{
-                      alignSelf: "center",
-                      padding: 5,
-                      marginLeft: 15,
-                      flexDirection: "row",
-                    }}
-                  >
-                    <Icon
-                      name="loop"
-                      type="SimpleLineIcons"
-                      style={{ fontSize: 23, color: this.theme.brandPrimary }}
-                    />
-                    <Text
-                      style={{
-                        color: this.theme.blackColor,
-                        marginLeft: 5,
-                        marginTop: 5,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {this.item.repostCount}
-                    </Text>
-                  </View> */}
 
                   <View
                     style={{
@@ -571,8 +521,9 @@ class PlayerScreen extends BaseScreen {
         </Modal>
 
         <ImageBackground
-          blurRadius={2}
-          source={{ uri: this.item.art_lg }}
+          blurRadius={1}
+          // source={{ uri: this.item.art_lg }}
+          source={{ uri: "http://manarahapp.com/uploads/TestImage.jpeg" }}
           style={{ flex: 1, width: "100%", height: "100%" }}
         >
           <View
@@ -584,7 +535,7 @@ class PlayerScreen extends BaseScreen {
               alignContent: "center",
             }}
           >
-            {this.type !== "radio" ? (
+            {/* {this.type !== "radio" ? (
               <TouchableOpacity
                 onPress={() => {
                   this.updateState({ infoModalVisible: true });
@@ -597,9 +548,9 @@ class PlayerScreen extends BaseScreen {
                   style={{ color: "#fff", fontSize: 25 }}
                 />
               </TouchableOpacity>
-            ) : null}
+            ) : null} */}
 
-            {this.type !== "radio" ? (
+            {/* {this.type !== "radio" ? (
               <TouchableOpacity
                 onPress={() => {
                   this.updateState({ nextupModalVisible: true });
@@ -612,7 +563,7 @@ class PlayerScreen extends BaseScreen {
                   style={{ color: "#fff", fontSize: 25 }}
                 />
               </TouchableOpacity>
-            ) : null}
+            ) : null} */}
 
             {this.type !== "radio" && this.item.price > 0 ? (
               <TouchableOpacity
@@ -721,38 +672,6 @@ class PlayerScreen extends BaseScreen {
                     }}
                   />
                 </TouchableOpacity>
-                {/* {this.type !== "radio" && this.state.item.isOwner !== 1 ? (
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.repost();
-                    }}
-                    style={{ alignSelf: "center", padding: 5, marginLeft: 15 }}
-                  >
-                    <Icon
-                      name="retweet"
-                      type="FontAwesome"
-                      style={{
-                        fontSize: 30,
-                        color:
-                          this.state.item.hasReposted === 1
-                            ? this.theme.brandPrimary
-                            : "#fff",
-                      }}
-                    />
-                  </TouchableOpacity>
-                ) : null}
-                <TouchableOpacity
-                  onPress={() => {
-                    this.updateState({ commentModalVisible: true });
-                  }}
-                  style={{ alignSelf: "center", padding: 5, marginLeft: 15 }}
-                >
-                  <Icon
-                    name="bubble"
-                    type="SimpleLineIcons"
-                    style={{ fontSize: 30, color: "#fff" }}
-                  />
-                </TouchableOpacity> */}
                 <TouchableOpacity
                   onPress={() => {
                     let message = lang.getString("share-track-message");
@@ -781,37 +700,15 @@ class PlayerScreen extends BaseScreen {
                 {this.type !== "radio" ? (
                   <TouchableOpacity
                     onPress={() => {
-                      if (!this.isDownloading(this.item.id)) {
-                        if (this.isDownloaded(this.item.id)) {
-                          this.deleteDownload(this.item);
-                        } else {
-                          this.download(this.item);
-                        }
-                      } else {
-                        this.deleteDownload(this.item);
-                      }
+                      this.updateState({ infoModalVisible: true });
                     }}
                     style={{ alignSelf: "center", padding: 5, marginLeft: 15 }}
                   >
-                    {this.isDownloading(this.item.id) ? (
-                      <ActivityIndicator
-                        style={{
-                          alignSelf: "center",
-                          color: this.theme.brandPrimary,
-                        }}
-                        size="large"
-                      />
-                    ) : this.isDownloaded(this.item.id) ? (
-                      <Icon
-                        name="download"
-                        style={{ fontSize: 35, color: this.theme.brandPrimary }}
-                      />
-                    ) : (
-                      <Icon
-                        name="download"
-                        style={{ fontSize: 35, color: "#fff" }}
-                      />
-                    )}
+                    <Icon
+                      name="info"
+                      type="SimpleLineIcons"
+                      style={{ fontSize: 30, color: "#fff" }}
+                    />
                   </TouchableOpacity>
                 ) : null}
               </View>
@@ -977,6 +874,8 @@ class PlayerScreen extends BaseScreen {
     });
   }
 }
+
+const image = require("../images/bg.jpeg");
 
 export default connect((state) => {
   return {

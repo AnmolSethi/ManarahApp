@@ -22,16 +22,20 @@ import BlogScreen from "./screens/BlogScreen";
 import ArtistScreen from "./screens/ArtistsScreen";
 import GenresScreen from "./screens/GenresScreen";
 import ShowTagsScreen from "./screens/ShowTagsScreen";
+import LatestTracks from "./screens/LatestTracks";
+import TopFifty from "./screens/TopFifty";
 
 export default routes = {
   start: HomeScreen,
   auth: AuthScreen,
   artist: ArtistScreen,
   showTags: ShowTagsScreen,
+  topFifty: TopFifty,
   genres: GenresScreen,
   explore: ExploreScreen,
   feed: FeedScreen,
   account: AccountScreen,
+  latestTracks: LatestTracks,
   collection: CollectionScreen,
   pro: ProScreen,
   settings: SettingsScreen,

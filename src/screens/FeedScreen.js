@@ -1,16 +1,7 @@
 import React from "react";
 import BaseScreen from "../utils/BaseScreen";
-import { Platform, View, Text, TouchableOpacity } from "react-native";
-import {
-  Container,
-  Icon,
-  Content,
-  Header,
-  Tab,
-  Tabs,
-  ScrollableTab,
-  Item,
-} from "native-base";
+import { Platform, View, Text } from "react-native";
+import { Container, Content, Tab, Tabs, ScrollableTab } from "native-base";
 import lang from "../utils/lang";
 import { connect } from "react-redux";
 import light from "../themes/light";
@@ -37,104 +28,11 @@ class FeedScreen extends BaseScreen {
       });
       this.checkAuth();
     });
-    this.loadGenres();
   }
 
   render() {
     return this.show(
       <Container style={{ flex: 1 }}>
-        {/* <Header
-          searchBar
-          rounded
-          hasTabs
-          style={{
-            paddingBottom: 20,
-            backgroundColor: this.theme.headerBg,
-            height: 65,
-          }}
-        >
-          <Item style={{ backgroundColor: "rgba(0,0,0,0.2)", top: 10 }}>
-            <TouchableOpacity
-              onPress={() =>
-                this.props.navigation.navigate("explore", {
-                  player: this.player,
-                })
-              }
-            >
-              <View style={{ flexDirection: "row" }}>
-                <Icon name="ios-search" style={{ color: "#E3E3E3" }} />
-                <Text style={{ color: "#E3E3E3", fontSize: 15, marginTop: 3 }}>
-                  {lang.getString("search_placeholder")}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </Item>
-          {this.isLoggedIn() ? (
-            <View style={{ flexDirection: "row" }}>
-              <TouchableOpacity
-                onPress={() =>
-                  this.props.navigation.navigate("notifications", {
-                    player: this.player,
-                  })
-                }
-                transparent
-                style={{
-                  position: "relative",
-                  top: 12,
-                  marginLeft: 7,
-                  marginRight: 10,
-                }}
-              >
-                <Icon
-                  name="bell"
-                  type="SimpleLineIcons"
-                  style={{ color: "#fff", fontSize: 20 }}
-                />
-                {this.state.notifications > 0 ? (
-                  <View
-                    style={{
-                      position: "absolute",
-                      top: -5,
-                      right: 0,
-                      width: 10,
-                      height: 10,
-                      borderRadius: 100,
-                      backgroundColor: this.theme.brandPrimary,
-                    }}
-                  ></View>
-                ) : null}
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() =>
-                  this.props.navigation.navigate("messages", {
-                    player: this.player,
-                  })
-                }
-                transparent
-                style={{ position: "relative", top: 12 }}
-              >
-                <Icon
-                  name="envelope"
-                  type="SimpleLineIcons"
-                  style={{ color: "#fff", fontSize: 20 }}
-                />
-                {this.state.countMessages > 0 ? (
-                  <View
-                    style={{
-                      position: "absolute",
-                      top: -5,
-                      right: 0,
-                      width: 10,
-                      height: 10,
-                      borderRadius: 100,
-                      backgroundColor: this.theme.brandPrimary,
-                    }}
-                  ></View>
-                ) : null}
-              </TouchableOpacity>
-            </View>
-          ) : null}
-        </Header> */}
         <Tabs
           locked={Platform.OS === "ios" ? false : true}
           renderTabBar={() => (
@@ -272,43 +170,6 @@ class FeedScreen extends BaseScreen {
         </Tabs>
       </Container>
     );
-  }
-
-  displayGenres() {
-    if (this.state.genres.length > 0) {
-      let result = this.state.genres;
-      let content = [];
-      for (let i = 0; i < result.length; i++) {
-        let genre = result[i];
-        content.push(
-          <View style={{ backgroundColor: this.theme.contentVariationBg }}>
-            <View
-              style={{ borderBottomWidth: 10, borderBottomColor: "#F8F8F8" }}
-            >
-              <Text
-                style={{
-                  fontSize: 17,
-                  fontWeight: "500",
-                  margin: 10,
-                  color: this.theme.brandPrimary,
-                }}
-              >
-                {genre.name}
-              </Text>
-              <DisplayComponent
-                player={this.player}
-                navigation={this.props.navigation}
-                limit={4}
-                type="genre"
-                typeId={genre.id}
-                displayType="horizontal-grid"
-              />
-            </View>
-          </View>
-        );
-      }
-      return <View>{content}</View>;
-    }
   }
 }
 

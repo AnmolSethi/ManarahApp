@@ -1,22 +1,15 @@
 import React from "react";
 import BaseScreen from "../utils/BaseScreen";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { Container, Icon, Item, Input, Header } from "native-base";
 import lang from "../utils/lang";
 import { connect } from "react-redux";
 import DisplayComponent from "../components/DisplayComponent";
 import PeopleComponent from "../components/PeopleComponent";
 import AlbumComponent from "../components/AlbumComponent";
-import { StyleSheet } from "react-native";
 import { ScrollView } from "react-native";
 import { Button } from "react-native";
-import Api from "../api";
 import { FlatGrid } from "react-native-super-grid";
-import { TouchableOpacity } from "react-native";
-
-// http://manarahapp.com/?userid=AnmolSethi&key=o0q0aOmm4M0JEA&p=api/o0q0aOmm4M0JEA/load/tracks&type=charts-top&limit=50&offset=0&type_id=all/this-week
-
-// http://manarahapp.com/?userid=AnmolSethi&key=o0q0aOmm4M0JEA&p=api/o0q0aOmm4M0JEA/get/trandingtag&limit=10
 
 class ExploreScreen extends BaseScreen {
   constructor(props) {
@@ -86,16 +79,42 @@ class ExploreScreen extends BaseScreen {
           </View>
 
           <View style={{ height: 340 }}>
-            <Text
+            <View
               style={{
-                fontSize: 17,
-                fontWeight: "500",
-                margin: 10,
-                color: this.theme.brandPrimary,
+                flexDirection: "row",
+                justifyContent: "space-between",
               }}
             >
-              {"Top Artists"}
-            </Text>
+              <Text
+                style={{
+                  fontSize: 17,
+                  fontWeight: "500",
+                  margin: 10,
+                  color: this.theme.brandPrimary,
+                }}
+              >
+                {"Top Artists"}
+              </Text>
+
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.push("artist", {
+                    player: this.player,
+                  });
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontWeight: "500",
+                    margin: 10,
+                    color: this.theme.brandPrimary,
+                  }}
+                >
+                  {"View All"}
+                </Text>
+              </TouchableOpacity>
+            </View>
             <PeopleComponent
               noCache={true}
               key={this.state.term}
@@ -106,17 +125,44 @@ class ExploreScreen extends BaseScreen {
               limit={6}
             />
           </View>
-          <View style={{ height: 410 }}>
-            <Text
+          <View style={{ height: 600 }}>
+            <View
               style={{
-                fontSize: 17,
-                fontWeight: "500",
-                margin: 10,
-                color: this.theme.brandPrimary,
+                flexDirection: "row",
+                justifyContent: "space-between",
               }}
             >
-              {"Latest Tracks"}
-            </Text>
+              <Text
+                style={{
+                  fontSize: 17,
+                  fontWeight: "500",
+                  margin: 10,
+                  color: this.theme.brandPrimary,
+                }}
+              >
+                {"Latest Tracks"}
+              </Text>
+
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate("latestTracks", {
+                    player: this.player,
+                  });
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontWeight: "500",
+                    margin: 10,
+                    color: this.theme.brandPrimary,
+                  }}
+                >
+                  {"View All"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
             <DisplayComponent
               player={this.player}
               navigation={this.props.navigation}
@@ -127,21 +173,48 @@ class ExploreScreen extends BaseScreen {
             />
           </View>
 
-          <View style={{ height: 3160 }}>
-            <Text
+          <View style={{ height: 680 }}>
+            <View
               style={{
-                fontSize: 17,
-                fontWeight: "500",
-                margin: 10,
-                color: this.theme.brandPrimary,
+                flexDirection: "row",
+                justifyContent: "space-between",
               }}
             >
-              {"Top 50"}
-            </Text>
+              <Text
+                style={{
+                  fontSize: 17,
+                  fontWeight: "500",
+                  margin: 10,
+                  color: this.theme.brandPrimary,
+                }}
+              >
+                {"Top 50"}
+              </Text>
+
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate("topFifty", {
+                    player: this.player,
+                  });
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontWeight: "500",
+                    margin: 10,
+                    color: this.theme.brandPrimary,
+                  }}
+                >
+                  {"View All"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
             <DisplayComponent
               player={this.player}
               navigation={this.props.navigation}
-              limit={50}
+              limit={10}
               type="charts-top"
               typeId="all/this-week"
               offset={0}
@@ -198,171 +271,10 @@ class ExploreScreen extends BaseScreen {
                   <EmptyComponent text={lang.getString("no_playlists_found")} />
                 )
               }
-              renderItem={({ item, index }) => this.displayGridItem(item)}
+              renderItem={({ item }) => this.displayGridItem(item)}
             />
           </View>
         </ScrollView>
-
-        {/* {this.state.term === "" ? (
-          <Tabs
-            locked={Platform.OS === "ios" ? false : true}
-            renderTabBar={() => (
-              <ScrollableTab
-                style={{
-                  borderBottomWidth: 0,
-                  borderTopWidth: 0,
-                  borderColor: light.headerBorderTopColor,
-                }}
-              />
-            )}
-            style={{
-              paddingTop: 0,
-              backgroundColor: this.theme.contentVariationBg,
-              elevation: 0,
-              shadowOffset: { height: 0, width: 0 },
-              shadowOpacity: 0,
-              flex: 1,
-              borderWidth: 0,
-            }}
-            tabBarUnderlineStyle={{ height: 3, bottom: 0 }}
-          >
-            <Tab
-              style={{ backgroundColor: this.theme.contentVariationBg }}
-              heading={lang.getString("explore").toUpperCase()}
-            >
-              <DisplayComponent
-                player={this.player}
-                navigation={this.props.navigation}
-                limit={10}
-                type="latest"
-                typeId=""
-                displayType="vertical-grid"
-              />
-            </Tab>
-            <Tab
-              style={{ backgroundColor: this.theme.contentVariationBg }}
-              heading={lang.getString("genres").toUpperCase()}
-            >
-              <Content>{this.displayGenres()}</Content>
-            </Tab>
-            <Tab
-              style={{ backgroundColor: this.theme.contentVariationBg }}
-              heading={lang.getString("artists").toUpperCase()}
-            >
-              <PeopleComponent
-                type="artists"
-                player={this.player}
-                navigation={this.props.navigation}
-                limit={10}
-              />
-            </Tab>
-            <Tab
-              style={{ backgroundColor: this.theme.contentVariationBg }}
-              heading={lang.getString("playlists").toUpperCase()}
-            >
-              <AlbumComponent
-                player={this.player}
-                navigation={this.props.navigation}
-                type="playlist"
-                typeId="discover"
-              />
-            </Tab>
-             <Tab style={{ backgroundColor: this.theme.contentVariationBg }} heading={lang.getString('albums').toUpperCase()}>
-                    <AlbumComponent player={this.player} navigation={this.props.navigation} type="album" typeId="discover" />
-                </Tab> 
-          </Tabs>
-        ) : (
-          <Tabs
-            renderTabBar={() => (
-              <ScrollableTab
-                style={{
-                  borderBottomWidth: 0,
-                  borderTopWidth: 0,
-                  borderColor: light.headerBorderTopColor,
-                }}
-              />
-            )}
-            style={{
-              paddingTop: 0,
-              elevation: 0,
-              shadowOffset: { height: 0, width: 0 },
-              shadowOpacity: 0,
-              flex: 1,
-              borderWidth: 0,
-            }}
-            tabBarUnderlineStyle={{ height: 0, top: -1 }}
-          >
-            <Tab
-              style={{ backgroundColor: this.theme.contentVariationBg }}
-              heading={lang.getString("tracks").toUpperCase()}
-            >
-              <DisplayComponent
-                noCache={true}
-                key={this.state.term}
-                player={this.player}
-                navigation={this.props.navigation}
-                limit={10}
-                type="search"
-                typeId={this.state.term}
-                displayType="vertical-grid"
-              />
-            </Tab>
-            <Tab
-              style={{ backgroundColor: this.theme.contentVariationBg }}
-              heading={lang.getString("people").toUpperCase()}
-            >
-              <PeopleComponent
-                noCache={true}
-                key={this.state.term}
-                type="people"
-                term={this.state.term}
-                player={this.player}
-                navigation={this.props.navigation}
-                limit={10}
-              />
-            </Tab>
-            <Tab
-              style={{ backgroundColor: this.theme.contentVariationBg }}
-              heading={lang.getString("artists").toUpperCase()}
-            >
-              <PeopleComponent
-                noCache={true}
-                key={this.state.term}
-                type="artists"
-                term={this.state.term}
-                player={this.player}
-                navigation={this.props.navigation}
-                limit={10}
-              />
-            </Tab>
-            <Tab
-              style={{ backgroundColor: this.theme.contentVariationBg }}
-              heading={lang.getString("playlists").toUpperCase()}
-            >
-              <AlbumComponent
-                noCache={true}
-                key={this.state.term}
-                player={this.player}
-                navigation={this.props.navigation}
-                type="playlist"
-                typeId={"search-" + this.state.term}
-              />
-            </Tab>
-            <Tab
-              style={{ backgroundColor: this.theme.contentVariationBg }}
-              heading={lang.getString("albums").toUpperCase()}
-            >
-              <AlbumComponent
-                noCache={true}
-                key={this.state.term}
-                player={this.player}
-                navigation={this.props.navigation}
-                type="album"
-                typeId={"search-" + this.state.term}
-              />
-            </Tab>
-          </Tabs>
-        )} */}
       </Container>
     );
   }
@@ -429,15 +341,6 @@ class ExploreScreen extends BaseScreen {
     }
   }
 }
-
-const styles = StyleSheet.create({
-  text: {
-    fontSize: 18,
-    fontWeight: "500",
-    margin: 15,
-    color: "white",
-  },
-});
 
 export default connect((state) => {
   return {

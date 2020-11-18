@@ -17,6 +17,7 @@ class PeopleComponent extends BaseScreen {
   offset = 0;
   limit = 6;
   cacheFilter = "";
+  limitList = false;
 
   constructor(props) {
     super(props);
@@ -25,6 +26,8 @@ class PeopleComponent extends BaseScreen {
       term: this.props.term,
     };
     this.type = this.props.type;
+    this.limitList =
+      this.props.limitList !== undefined ? this.props.limitList : false;
     this.userid =
       this.props.theUserid !== undefined ? this.props.theUserid : "";
     this.term = this.props.term !== undefined ? this.props.term : "";
@@ -76,6 +79,7 @@ class PeopleComponent extends BaseScreen {
       limit: this.limit,
     })
       .then((result) => {
+        console.log(result);
         let lists = [];
         if (paginate) {
           //more
@@ -123,7 +127,11 @@ class PeopleComponent extends BaseScreen {
         style={{ backgroundColor: this.theme.contentVariationBg }}
         onEndReachedThreshold={0.5}
         onEndReached={() => {
-          if (this.state.itemLists.length > 0 && !this.state.itemListNotEnd) {
+          if (
+            this.state.itemLists.length > 0 &&
+            !this.state.itemListNotEnd &&
+            this.state.limitList
+          ) {
             this.loadLists(true);
           }
           return true;

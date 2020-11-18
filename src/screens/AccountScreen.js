@@ -30,6 +30,7 @@ import { APP_LINK } from "../config";
 import dark from "../themes/dark";
 import Api from "../api";
 import RNRestart from "react-native-restart";
+
 class AccountScreen extends BaseScreen {
   constructor(props) {
     super(props);

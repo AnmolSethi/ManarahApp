@@ -9,7 +9,6 @@ import DisplayComponent from "../components/DisplayComponent";
 import { ActivityIndicator } from "react-native";
 import { FlatGrid } from "react-native-super-grid";
 import EmptyComponent from "../utils/EmptyComponent";
-import { Button } from "react-native";
 
 class GenresScreen extends BaseScreen {
   constructor(props) {

@@ -1,8 +1,5 @@
-// export const API_KEY = "fskfsdkfjhsdkjh";
 export const API_KEY = "o0q0aOmm4M0JEA";
-// export const WEBSITE = "https://music.krea8iv.com/demo/";
 export const WEBSITE = "http://manarahapp.com/";
-// export const BASE_URL = WEBSITE + "api/" + API_KEY + "/";
 export const BASE_URL = "http://manarahapp.com/?p=api/o0q0aOmm4M0JEA/";
 export const DEFAULT_LANG = "en";
 export const DEFAULT_THEME = "dark";
@@ -13,7 +10,7 @@ export const VIDEO_MODULE = true;
 export const ENABLE_PREMIUM = true;
 export const ENABLE_RADIO_PLUGIN = true;
 export const ENABLE_BLOG_PLUGIN = true;
-export const ENABLE_FB_LOGIN = true;
+export const ENABLE_FB_LOGIN = false;
 export const YEARLYPRODUCT_ID = "";
 export const MONTHLYPRODUCT_ID = "";
 
