@@ -33,7 +33,19 @@ class FeedScreen extends BaseScreen {
   render() {
     return this.show(
       <Container style={{ flex: 1 }}>
-        <Tabs
+        <Content style={{ backgroundColor: this.theme.contentVariationBg }}>
+          {this.props.userid === null || this.props.userid === "" ? (
+            <PleaseLoginComponent navigation={this.props.navigation} />
+          ) : (
+            <DisplayComponent
+              type="feed"
+              navigation={this.props.navigation}
+              typeId=""
+              displayType="feed-list"
+            />
+          )}
+        </Content>
+        {/* <Tabs
           locked={Platform.OS === "ios" ? false : true}
           renderTabBar={() => (
             <ScrollableTab
@@ -167,7 +179,7 @@ class FeedScreen extends BaseScreen {
               </View>
             </Content>
           </Tab>
-        </Tabs>
+        </Tabs> */}
       </Container>
     );
   }

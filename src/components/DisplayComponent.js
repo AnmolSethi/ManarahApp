@@ -1089,7 +1089,7 @@ class DisplayComponent extends BaseScreen {
               >
                 {item.viewCount}
               </Text>
-
+{/* 
               <Icon
                 type="SimpleLineIcons"
                 name="loop"
@@ -1116,7 +1116,7 @@ class DisplayComponent extends BaseScreen {
                 }}
               >
                 {item.repostCount}
-              </Text>
+              </Text> */}
               <Icon
                 type="SimpleLineIcons"
                 name="bubble"
