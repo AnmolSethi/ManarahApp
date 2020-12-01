@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  ImageBackground,
 } from "react-native";
 import { Container, Icon, Button, Form, Item, Input, Toast } from "native-base";
 import lang from "../utils/lang";
@@ -217,21 +218,10 @@ class AuthScreen extends BaseScreen {
           textStyle={{ color: "#FFF" }}
         />
         <View style={{ flex: 1 }}>
-          {typeof this.state.image === "string" &&
-          this.state.image.indexOf("http") !== -1 ? (
-            <FastImage
-              style={{ flex: 1, resizeMode, width: null, height: null }}
-              source={{
-                uri: this.state.image,
-              }}
-              resizeMode={FastImage.resizeMode.cover}
-            />
-          ) : (
-            <Image
-              style={{ flex: 1, resizeMode, width: null, height: null }}
-              source={this.state.image}
-            />
-          )}
+          <Image
+            style={{ flex: 1, resizeMode, width: null, height: null }}
+            source={require("../images/bg.jpeg")}
+          />
 
           <View
             style={{
@@ -240,7 +230,6 @@ class AuthScreen extends BaseScreen {
               left: 0,
               right: 0,
               bottom: 0,
-              backgroundColor: this.theme.primaryTransparent,
             }}
           >
             <ScrollView
@@ -250,50 +239,69 @@ class AuthScreen extends BaseScreen {
               <View
                 style={{
                   flex: 1,
+                  padding: 20,
+                  marginTop: 10,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.goBack()}
+                >
+                  <Icon
+                    name="arrow-left"
+                    type="SimpleLineIcons"
+                    style={{ fontSize: 20, color: "#FFF" }}
+                  />
+                </TouchableOpacity>
+                <Text
+                  style={{ fontSize: 20, color: "white", fontWeight: "600" }}
+                >
+                  {this.state.currentPage === "login"
+                    ? lang.getString("login")
+                    : "Registration"}
+                </Text>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.goBack()}
+                >
+                  <Icon
+                    name="close"
+                    type="SimpleLineIcons"
+                    style={{ fontSize: 20, color: "#FFF" }}
+                  />
+                </TouchableOpacity>
+              </View>
+
+              <Image
+                source={require("../images/white.png")}
+                style={{
+                  width: 250,
+                  marginTop: 100,
+                  height: 120,
+                  resizeMode: "contain",
+                  alignSelf: "center",
+                }}
+              />
+              <View
+                style={{
+                  flex: 1,
                   flexDirection: "column",
                   justifyContent: "center",
                   padding: 30,
                 }}
               >
-                <TouchableOpacity
-                  onPress={() => this.props.navigation.goBack()}
-                  style={{
-                    position: "absolute",
-                    top: Platform.OS === "ios" ? 20 : 15,
-                    left: 10,
-                  }}
-                >
-                  <Icon
-                    name="arrow-round-back"
-                    style={{ fontSize: 45, color: "#FFF" }}
-                  />
-                </TouchableOpacity>
                 {this.state.currentPage === "login" ? (
                   <View>
-                    <Text
-                      style={{
-                        alignSelf: "center",
-                        fontSize: 35,
-                        color: "white",
-                        marginTop: 60,
-                        marginBottom: 100,
-                      }}
-                    >
-                      {lang.getString("login")}
-                    </Text>
-
                     <Form>
                       <Item
-                        rounded
                         style={{
-                          marginBottom: 20,
+                          marginBottom: 10,
                           backgroundColor: "#FFF",
                           paddingLeft: 7,
                         }}
                       >
-                        <Icon active name="person" />
                         <Input
-                          style={{ color: "black" }}
+                          style={{ color: "grey" }}
                           placeholder={lang.getString("username")}
                           onChangeText={(t) =>
                             this.updateState({ username: t })
@@ -301,18 +309,16 @@ class AuthScreen extends BaseScreen {
                         />
                       </Item>
                       <Item
-                        rounded
                         style={{
-                          marginBottom: 40,
+                          marginBottom: 20,
                           backgroundColor: "#FFF",
                           paddingLeft: 7,
                         }}
                       >
-                        <Icon active name="lock" />
                         <Input
                           secureTextEntry
                           placeholder={lang.getString("password")}
-                          style={{ color: "black" }}
+                          style={{ color: "grey" }}
                           onChangeText={(t) =>
                             this.updateState({ password: t })
                           }
@@ -321,43 +327,77 @@ class AuthScreen extends BaseScreen {
                     </Form>
 
                     <TouchableOpacity onPress={() => this.submitLogin()}>
-                      <Icon
-                        name="arrow-right-circle"
-                        type="SimpleLineIcons"
+                      <ImageBackground
+                        source={require("../images/btn.png")}
                         style={{
-                          color: "white",
-                          fontSize: 50,
-                          alignSelf: "center",
+                          width: 300,
+                          alignItems: "center",
+                          marginTop: 10,
+                          height: 40,
+                          justifyContent: "center",
                         }}
-                      />
+                      >
+                        <Text
+                          style={{
+                            alignSelf: "center",
+                            fontSize: 18,
+                            color: "#fff",
+                          }}
+                        >
+                          {lang.getString("login")}
+                        </Text>
+                      </ImageBackground>
                     </TouchableOpacity>
+
+                    <View
+                      style={{
+                        flex: 1,
+                        padding: 20,
+                        marginTop: 10,
+                        flexDirection: "row",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          alignSelf: "flex-start",
+                          fontSize: 12,
+                          color: "grey",
+                        }}
+                      >
+                        {"Do not have an account?"}
+                      </Text>
+                      <TouchableOpacity
+                        onPress={() =>
+                          this.updateState({ currentPage: "signup" })
+                        }
+                      >
+                        <Text
+                          style={{
+                            alignSelf: "flex-start",
+                            fontSize: 12,
+                            color: "black",
+                            marginLeft: 5,
+                            textDecorationLine: "underline",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {"Registration"}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 ) : null}
 
                 {this.state.currentPage === "signup" ? (
                   <View>
-                    <Text
-                      style={{
-                        alignSelf: "center",
-                        fontSize: 35,
-                        color: "white",
-                        marginTop: 0,
-                        marginBottom: 10,
-                      }}
-                    >
-                      {lang.getString("signup")}
-                    </Text>
-
                     <Form style={{ marginTop: 30 }}>
                       <Item
-                        rounded
                         style={{
-                          marginBottom: 20,
+                          marginBottom: 10,
                           backgroundColor: "#FFF",
                           paddingLeft: 7,
                         }}
                       >
-                        <Icon active name="person" />
                         <Input
                           style={{ color: "black" }}
                           placeholder={lang.getString("fullname")}
@@ -365,14 +405,12 @@ class AuthScreen extends BaseScreen {
                         />
                       </Item>
                       <Item
-                        rounded
                         style={{
-                          marginBottom: 20,
+                          marginBottom: 10,
                           backgroundColor: "#FFF",
                           paddingLeft: 7,
                         }}
                       >
-                        <Icon active name="person" />
                         <Input
                           style={{ color: "black" }}
                           placeholder={lang.getString("username")}
@@ -382,14 +420,12 @@ class AuthScreen extends BaseScreen {
                         />
                       </Item>
                       <Item
-                        rounded
                         style={{
-                          marginBottom: 20,
+                          marginBottom: 10,
                           backgroundColor: "#FFF",
                           paddingLeft: 7,
                         }}
                       >
-                        <Icon active name="mail" />
                         <Input
                           style={{ color: "black" }}
                           placeholder={lang.getString("email-address")}
@@ -397,14 +433,12 @@ class AuthScreen extends BaseScreen {
                         />
                       </Item>
                       <Item
-                        rounded
                         style={{
-                          marginBottom: 40,
+                          marginBottom: 20,
                           backgroundColor: "#FFF",
                           paddingLeft: 7,
                         }}
                       >
-                        <Icon active name="lock" />
                         <Input
                           secureTextEntry
                           placeholder={lang.getString("password")}
@@ -417,81 +451,66 @@ class AuthScreen extends BaseScreen {
                     </Form>
 
                     <TouchableOpacity onPress={() => this.submitSignup()}>
-                      <Icon
-                        name="arrow-right-circle"
-                        type="SimpleLineIcons"
+                      <ImageBackground
+                        source={require("../images/btn.png")}
                         style={{
-                          color: "white",
-                          fontSize: 50,
-                          alignSelf: "center",
+                          width: 300,
+                          alignItems: "center",
+                          marginTop: 10,
+                          height: 40,
+                          justifyContent: "center",
                         }}
-                      />
+                      >
+                        <Text
+                          style={{
+                            alignSelf: "center",
+                            fontSize: 18,
+                            color: "#fff",
+                          }}
+                        >
+                          {"Complete"}
+                        </Text>
+                      </ImageBackground>
                     </TouchableOpacity>
+
+                    <View
+                      style={{
+                        flex: 1,
+                        padding: 20,
+                        marginTop: 10,
+                        flexDirection: "row",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          alignSelf: "flex-start",
+                          fontSize: 12,
+                          color: "grey",
+                        }}
+                      >
+                        {"Already have an account?"}
+                      </Text>
+                      <TouchableOpacity
+                        onPress={() =>
+                          this.updateState({ currentPage: "login" })
+                        }
+                      >
+                        <Text
+                          style={{
+                            alignSelf: "flex-start",
+                            fontSize: 12,
+                            color: "black",
+                            marginLeft: 5,
+                            textDecorationLine: "underline",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {"Login"}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 ) : null}
-
-                <View
-                  style={{
-                    width: "100%",
-                    flexDirection: "column",
-                    padding: 20,
-                    marginTop: 50,
-                  }}
-                >
-                  {ENABLE_FB_LOGIN ? (
-                    <Button
-                      onPress={() => this.fbLogin()}
-                      block
-                      danger
-                      style={{
-                        width: "100%",
-                        backgroundColor: "#466594",
-                        marginBottom: 5,
-                      }}
-                    >
-                      <Icon
-                        name="social-facebook"
-                        type="SimpleLineIcons"
-                        style={{ color: "white" }}
-                      />
-                      <Text style={{ color: "white", fontSize: 20 }}>
-                        {lang.getString("login-with-facebook")}
-                      </Text>
-                    </Button>
-                  ) : null}
-                  {this.state.currentPage === "login" ||
-                  this.state.currentPage === "forgot" ? (
-                    <Button
-                      onPress={() =>
-                        this.updateState({ currentPage: "signup" })
-                      }
-                      block
-                      danger
-                      style={{
-                        width: "100%",
-                        backgroundColor: this.theme.brandPrimary,
-                      }}
-                    >
-                      <Text style={{ color: "white", fontSize: 20 }}>
-                        {lang.getString("signup-for-account")}
-                      </Text>
-                    </Button>
-                  ) : (
-                    <Button
-                      onPress={() => this.updateState({ currentPage: "login" })}
-                      block
-                      danger
-                      style={{
-                        width: "100%",
-                        backgroundColor: this.theme.brandPrimary,
-                      }}
-                    >
-                      <Text style={{ color: "white", fontSize: 20 }}>
-                        {lang.getString("login")}
-                      </Text>
-                    </Button>
-                  )}
-                </View>
               </View>
             </ScrollView>
           </View>

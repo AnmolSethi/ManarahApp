@@ -6,7 +6,7 @@ import storage from "./store/storage";
 const Api = {
   api: () => {
     let api = new Frisbee({
-      baseURI: BASE_URL, // optional
+      baseURI: BASE_URL,
       headers: {
         Accept: "application/text",
         "Content-Type": "application/text",
@@ -22,8 +22,6 @@ const Api = {
         return JSON.parse(text);
       },
       request: function (path, options) {
-        // Read/Modify the path or options
-        //console.log(options);
         return [path, options];
       },
     });

@@ -1,6 +1,13 @@
 import React from "react";
 import BaseScreen from "../utils/BaseScreen";
-import { Platform, View, Text, Image } from "react-native";
+import {
+  Platform,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ImageBackground,
+} from "react-native";
 import { Container, Button } from "native-base";
 import lang from "../utils/lang";
 import { connect } from "react-redux";
@@ -74,21 +81,10 @@ class HomeScreen extends BaseScreen {
     return this.showContent(
       <Container style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
-          {typeof this.state.image === "string" &&
-          this.state.image.indexOf("http") !== -1 ? (
-            <FastImage
-              style={{ flex: 1, resizeMode, width: null, height: null }}
-              source={{
-                uri: this.state.image,
-              }}
-              resizeMode={FastImage.resizeMode.cover}
-            />
-          ) : (
-            <Image
-              style={{ flex: 1, resizeMode, width: null, height: null }}
-              source={this.state.image}
-            />
-          )}
+          <Image
+            style={{ flex: 1, resizeMode, width: null, height: null }}
+            source={require("../images/bg.jpeg")}
+          />
 
           <View
             style={{
@@ -97,7 +93,6 @@ class HomeScreen extends BaseScreen {
               left: 0,
               right: 0,
               bottom: 0,
-              backgroundColor: this.theme.primaryTransparent,
             }}
           >
             <View
@@ -106,52 +101,134 @@ class HomeScreen extends BaseScreen {
                 flexDirection: "column",
                 justifyContent: "center",
                 padding: 30,
-                paddingTop: 10,
+                paddingTop: 20,
               }}
             >
               <Image
-                source={require("../images/logo.png")}
+                source={require("../images/white.png")}
                 style={{
-                  marginBottom: 20,
-                  width: 300,
+                  marginTop: 120,
+                  width: 150,
                   height: 60,
                   resizeMode: "contain",
                   alignSelf: "center",
                   flex: 1,
                 }}
               />
-              <Button
+              <Text
+                style={{
+                  alignSelf: "center",
+                  marginTop: 20,
+                  fontSize: 20,
+                  fontWeight: "500",
+                }}
+              >
+                {"Manarah"}
+              </Text>
+
+              <TouchableOpacity
                 onPress={() =>
                   this.props.navigation.navigate("auth", { page: "login" })
                 }
-                block
-                danger
-                style={{
-                  width: "100%",
-                  backgroundColor: this.theme.brandPrimary,
-                  marginTop: 30,
-                }}
               >
-                <Text style={{ color: "#FFF", fontSize: 20 }}>
-                  {lang.getString("login")}
-                </Text>
-              </Button>
-              <Button
+                <ImageBackground
+                  source={require("../images/btn.png")}
+                  style={{
+                    width: 300,
+                    alignItems: "center",
+                    marginTop: 50,
+                    height: 40,
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      alignSelf: "center",
+                      fontSize: 18,
+                      color: "#fff",
+                    }}
+                  >
+                    {lang.getString("login")}
+                  </Text>
+                </ImageBackground>
+              </TouchableOpacity>
+
+              {/* <LinearGradient
+                  colors={["red", "yellow", "green"]}
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderRadius: 5,
+                    height: 200,
+                    width: 350,
+                  }}
+                >
+                  
+                </LinearGradient> */}
+
+              <TouchableOpacity
                 onPress={() =>
                   this.props.navigation.navigate("auth", { page: "signup" })
                 }
-                block
-                danger
+              >
+                <ImageBackground
+                  source={require("../images/btn.png")}
+                  style={{
+                    width: 300,
+                    marginTop: 15,
+                    alignItems: "center",
+                    height: 40,
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      alignSelf: "center",
+                      fontSize: 18,
+                      color: "#fff",
+                    }}
+                  >
+                    {lang.getString("signup-for-account")}
+                  </Text>
+                </ImageBackground>
+              </TouchableOpacity>
+
+              <View
                 style={{
-                  width: "100%",
-                  backgroundColor: "#FFF",
-                  marginTop: 10,
+                  flexDirection: "row",
+                  justifyContent: "space-evenly",
+                  padding: 20,
                 }}
               >
-                <Text style={{ color: this.theme.brandPrimary, fontSize: 20 }}>
-                  {lang.getString("signup-for-account")}
-                </Text>
-              </Button>
+                <Text>{"OR"}</Text>
+              </View>
+
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate(DEFAULT_HOME)}
+              >
+                <ImageBackground
+                  source={require("../images/btn.png")}
+                  style={{
+                    width: 300,
+                    alignItems: "center",
+                    height: 40,
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      alignSelf: "center",
+                      fontSize: 18,
+                      color: "#fff",
+                    }}
+                  >
+                    {lang.getString("explore-music")}
+                  </Text>
+                </ImageBackground>
+              </TouchableOpacity>
+
+              <View style={{ flex: 1 }}></View>
+              {/* 
               <View
                 style={{
                   flex: 1,
@@ -166,9 +243,9 @@ class HomeScreen extends BaseScreen {
                   textSize={20}
                   text={this.state.typeText}
                 />
-              </View>
+              </View> */}
             </View>
-
+            {/* 
             {PUBLIC_ACCESS ? (
               <Button
                 onPress={() => this.props.navigation.navigate(DEFAULT_HOME)}
@@ -186,8 +263,21 @@ class HomeScreen extends BaseScreen {
                 </Text>
               </Button>
             ) : null}
-
+ */}
             <View
+              style={{
+                marginTop: Platform.OS === "ios" ? 40 : 10,
+                position: "absolute",
+                left: 20,
+                top: 20,
+              }}
+            >
+              <Text style={{ color: "#fff", fontSize: 25, fontWeight: "bold" }}>
+                {"Login"}
+              </Text>
+            </View>
+
+            {/* <View
               style={{
                 marginTop: Platform.OS === "ios" ? 40 : 10,
                 position: "absolute",
@@ -210,7 +300,7 @@ class HomeScreen extends BaseScreen {
                 </MenuTrigger>
                 {this.languageOptions()}
               </Menu>
-            </View>
+            </View> */}
           </View>
         </View>
       </Container>

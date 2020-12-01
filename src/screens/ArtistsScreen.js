@@ -130,17 +130,18 @@ class ArtistScreen extends BaseScreen {
             justifyContent: "center",
             width: "100%",
             height: 48,
-            backgroundColor: this.theme.accentColor,
+            backgroundColor: "white",
             padding: 10,
             flexDirection: "row",
           }}
         >
           <Text
             style={{
-              color: "#fff",
+              color: "black",
               fontSize: 17,
               marginLeft: 10,
               marginTop: 3,
+              fontWeight: "bold",
             }}
           >
             {lang.getString("artists")}
@@ -200,6 +201,7 @@ class ArtistScreen extends BaseScreen {
   }
 
   displayGridItem(item) {
+    console.log(item);
     if (item === false) return null;
     return (
       <View style={{ flex: 1 }}>
@@ -222,12 +224,6 @@ class ArtistScreen extends BaseScreen {
             }}
             resizeMode={FastImage.resizeMode.cover}
           />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            this.openProfile(item);
-          }}
-        >
           <Text
             numberOfLines={1}
             style={{

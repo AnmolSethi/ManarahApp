@@ -41,6 +41,7 @@ export default class App extends Component<Props> {
         this.preLoad(response);
       })
       .catch((e) => {
+        console.log(e);
         this.preLoad(false);
       });
 
@@ -79,7 +80,7 @@ export default class App extends Component<Props> {
           privacy_link: "",
           terms_link: "",
           contact_link: "",
-          default_mode: "dark",
+          default_mode: "light",
           in_app_purchase: false,
           default_language: "en",
           transparent_primary: "rgba(250,0,82,0.2)",
