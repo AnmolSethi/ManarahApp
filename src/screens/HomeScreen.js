@@ -8,19 +8,12 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
-import { Container, Button } from "native-base";
+import { Container } from "native-base";
 import lang from "../utils/lang";
 import { connect } from "react-redux";
-import TypingText from "react-native-typing-text";
-import { DEFAULT_HOME, LANGUAGES, PUBLIC_ACCESS } from "../config";
-import {
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-} from "react-native-popup-menu";
+import { LANGUAGES } from "../config";
+import { MenuOptions, MenuOption } from "react-native-popup-menu";
 import storage from "../store/storage";
-import FastImage from "react-native-fast-image";
 
 class HomeScreen extends BaseScreen {
   constructor(props) {
@@ -204,7 +197,7 @@ class HomeScreen extends BaseScreen {
               </View>
 
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate(DEFAULT_HOME)}
+                onPress={() => this.props.navigation.navigate("explore")}
               >
                 <ImageBackground
                   source={require("../images/btn.png")}

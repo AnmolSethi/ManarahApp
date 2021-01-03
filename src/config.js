@@ -3,7 +3,7 @@ export const WEBSITE = "http://manarahapp.com/";
 export const BASE_URL = "http://manarahapp.com/?p=api/o0q0aOmm4M0JEA/";
 export const DEFAULT_LANG = "en";
 export const DEFAULT_THEME = "dark";
-export const DEFAULT_HOME = "feed"; //it can be feed or explore
+export const DEFAULT_HOME = "browse"; //it can be feed or explore
 export const PUBLIC_ACCESS = true;
 export const STORE_MODULE = true;
 export const VIDEO_MODULE = true;

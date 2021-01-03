@@ -56,7 +56,7 @@ class UserProfileScreen extends BaseScreen {
     }).then((r) => {
       this.updateState({
         hasSpotlightLoaded: true,
-        hasSpotlight: r.status === 1 ? true : false,
+        hasSpotlight: r.status === 1 ? false : true,
       });
     });
   }

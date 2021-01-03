@@ -223,16 +223,43 @@ class ExploreScreen extends BaseScreen {
           </View>
 
           <View style={{ height: 240 }}>
-            <Text
+            <View
               style={{
-                fontSize: 17,
-                fontWeight: "500",
-                margin: 10,
-                color: this.theme.brandPrimary,
+                flexDirection: "row",
+                justifyContent: "space-between",
               }}
             >
-              {"Playlists"}
-            </Text>
+              <Text
+                style={{
+                  fontSize: 17,
+                  fontWeight: "500",
+                  margin: 10,
+                  color: this.theme.brandPrimary,
+                }}
+              >
+                {"Playlists"}
+              </Text>
+
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate("playlists", {
+                    player: this.player,
+                  });
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontWeight: "500",
+                    margin: 10,
+                    color: this.theme.brandPrimary,
+                  }}
+                >
+                  {"View All"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
             <AlbumComponent
               noCache={true}
               key={this.state.term}

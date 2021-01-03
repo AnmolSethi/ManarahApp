@@ -491,8 +491,14 @@ class BaseScreen extends Component {
                 style={{ borderRadius: 0, position: "relative" }}
                 vertical
                 onPress={() => {
-                  if (this.state.details != null)
-                    this.openProfile(this.state.details);
+                  if (!this.isLoggedIn()) {
+                    this.props.navigation.navigate("account", {
+                      player: this.player,
+                    });
+                  } else {
+                    if (this.state.details != null)
+                      this.openProfile(this.state.details);
+                  }
                 }}
               >
                 <Icon

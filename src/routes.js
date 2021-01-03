@@ -24,6 +24,7 @@ import GenresScreen from "./screens/GenresScreen";
 import ShowTagsScreen from "./screens/ShowTagsScreen";
 import LatestTracks from "./screens/LatestTracks";
 import TopFifty from "./screens/TopFifty";
+import Playlists from "./screens/Playlists";
 
 export default routes = {
   start: HomeScreen,
@@ -35,6 +36,7 @@ export default routes = {
   explore: ExploreScreen,
   feed: FeedScreen,
   account: AccountScreen,
+  playlists: Playlists,
   latestTracks: LatestTracks,
   collection: CollectionScreen,
   pro: ProScreen,
