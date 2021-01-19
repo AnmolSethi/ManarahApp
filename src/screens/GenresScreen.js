@@ -9,6 +9,7 @@ import DisplayComponent from "../components/DisplayComponent";
 import { ActivityIndicator } from "react-native";
 import { FlatGrid } from "react-native-super-grid";
 import EmptyComponent from "../utils/EmptyComponent";
+import { TouchableOpacity } from "react-native";
 
 class GenresScreen extends BaseScreen {
   constructor(props) {
@@ -27,7 +28,12 @@ class GenresScreen extends BaseScreen {
       for (let i = 0; i < result.length; i++) {
         let genre = result[i];
         content.push(
-          <View style={{ backgroundColor: this.theme.contentVariationBg }}>
+          <View
+            style={{
+              backgroundColor: this.theme.contentVariationBg,
+              height: 200,
+            }}
+          >
             <View
               key={genre.id}
               style={{
@@ -48,10 +54,9 @@ class GenresScreen extends BaseScreen {
               <DisplayComponent
                 player={this.player}
                 navigation={this.props.navigation}
-                limit={4}
                 type="genre"
                 typeId={genre.id}
-                displayType="horizontal-grid"
+                displayType="small-list"
               />
             </View>
           </View>
@@ -105,7 +110,7 @@ class GenresScreen extends BaseScreen {
             itemDimension={100}
             spacing={15}
             style={{
-              height: 200,
+              height: 300,
             }}
             onEndReachedThreshold={0.5}
             fixed={false}
@@ -126,25 +131,37 @@ class GenresScreen extends BaseScreen {
   }
 
   displayGridItem(item) {
+    console.log(item);
     if (item === false) return null;
     return (
-      <View
-        style={{
-          backgroundColor: this.theme.brandPrimary,
-          padding: 10,
-          borderRadius: 10,
+      <TouchableOpacity
+        onPress={() => {
+          this.props.navigation.navigate("latestTracks", {
+            player: this.player,
+            type: "genre",
+            typeId: item.id,
+            title: item.name,
+          });
         }}
       >
-        <Text
+        <View
           style={{
-            color: this.theme.whiteColor,
-            fontSize: 18,
-            fontWeight: "700",
+            backgroundColor: this.theme.brandPrimary,
+            padding: 10,
+            borderRadius: 10,
           }}
         >
-          {item.name}
-        </Text>
-      </View>
+          <Text
+            style={{
+              color: this.theme.whiteColor,
+              fontSize: 18,
+              fontWeight: "700",
+            }}
+          >
+            {item.name}
+          </Text>
+        </View>
+      </TouchableOpacity>
     );
   }
 }

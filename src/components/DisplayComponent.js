@@ -17,6 +17,7 @@ import { offlineSchema, trackSchema } from "../store/realmSchema";
 import { BASE_CURRENCY } from "../config";
 import Time from "../utils/Time";
 import Container from "../../native-base-theme/components/Container";
+import { ThemeConsumer } from "react-native-elements";
 const Realm = require("realm");
 
 class DisplayComponent extends BaseScreen {
@@ -34,20 +35,20 @@ class DisplayComponent extends BaseScreen {
       typeId: this.props.typeId,
       displayType:
         this.props.displayType !== undefined ? this.props.displayType : "list",
+      limit: this.props.limit !== undefined ? this.props.limit : 10,
     };
     this.limit = this.props.limit !== undefined ? this.props.limit : 10;
     this.cacheFilter =
       this.props.cacheFilter !== undefined ? this.props.cacheFilter : "";
     this.component = this.props.component;
     this.noCache = this.props.noCache === undefined ? false : true;
-
     this.loadLists(false);
   }
 
   loadLists(paginate) {
     this.updateState({ fetchFinished: false });
     let offset = this.offset;
-    this.offset = this.limit + this.offset;
+    this.offset = this.state.limit + this.offset;
     if (this.state.type === "offline") {
       if (paginate) return;
       Realm.open({ schema: [trackSchema] }).then((realm) => {
@@ -101,7 +102,7 @@ class DisplayComponent extends BaseScreen {
         type: this.state.type,
         type_id: this.state.typeId,
         offset: offset,
-        limit: this.limit,
+        limit: this.state.limit,
       })
         .then((result) => {
           let lists = [];
@@ -499,7 +500,7 @@ class DisplayComponent extends BaseScreen {
       >
         <View style={{ flex: 1, flexDirection: "row", padding: 10 }}>
           <FastImage
-            style={{ width: 40, height: 40, marginTop: 4 }}
+            style={{ width: 40, height: 40, marginTop: 4, borderRadius: 4 }}
             source={{
               uri: item.art_md,
             }}
@@ -1089,34 +1090,6 @@ class DisplayComponent extends BaseScreen {
               >
                 {item.viewCount}
               </Text>
-{/* 
-              <Icon
-                type="SimpleLineIcons"
-                name="loop"
-                style={{
-                  color: "#fff",
-                  fontSize: 20,
-                  textShadowColor: "rgba(0, 0, 0, 0.75)",
-                  textShadowOffset: { width: -1, height: 1 },
-                  textShadowRadius: 10,
-                  marginLeft: 7,
-                }}
-              />
-              <Text
-                style={{
-                  textShadowColor: "rgba(0, 0, 0, 0.75)",
-                  textShadowOffset: { width: -1, height: 1 },
-                  textShadowRadius: 10,
-                  color: "#fff",
-                  marginLeft: -10,
-                  fontSize: 12,
-                  bottom: 2,
-                  marginRight: 7,
-                  fontWeight: "bold",
-                }}
-              >
-                {item.repostCount}
-              </Text> */}
               <Icon
                 type="SimpleLineIcons"
                 name="bubble"

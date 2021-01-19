@@ -92,7 +92,7 @@ class UserProfileScreen extends BaseScreen {
               >
                 <Icon
                   name="arrow-round-back"
-                  style={{ color: this.theme.blackColor, fontSize: 30 }}
+                  style={{ color: this.theme.whiteColor, fontSize: 30 }}
                 />
               </TouchableOpacity>
             </View>
@@ -341,6 +341,7 @@ class UserProfileScreen extends BaseScreen {
           </View>
 
           <Tabs
+            tabBarBackgroundColor={"white"}
             renderTabBar={() => (
               <ScrollableTab
                 style={{
@@ -352,7 +353,6 @@ class UserProfileScreen extends BaseScreen {
             )}
             style={{
               paddingTop: 0,
-              backgroundColor: this.theme.contentVariationBg,
               elevation: 0,
               shadowOffset: { height: 0, width: 0 },
               shadowOpacity: 0,
@@ -361,10 +361,7 @@ class UserProfileScreen extends BaseScreen {
             }}
             tabBarUnderlineStyle={{ height: 0, top: -1 }}
           >
-            <Tab
-              style={{ backgroundColor: this.theme.contentVariationBg }}
-              heading={lang.getString("all").toUpperCase()}
-            >
+            <Tab heading={lang.getString("all").toUpperCase()}>
               {this.state.hasSpotlightLoaded ? (
                 <DisplayComponent
                   headerComponent={
@@ -396,7 +393,7 @@ class UserProfileScreen extends BaseScreen {
                             limit={5}
                             type="my-spotlight"
                             typeId={this.item.id}
-                            displayType="horizontal-grid"
+                            displayType="small-list"
                           />
                         </View>
                       </View>
@@ -408,7 +405,7 @@ class UserProfileScreen extends BaseScreen {
                   limit={10}
                   type="my-stream"
                   typeId={this.item.id}
-                  displayType="feed-list"
+                  displayType="small-list"
                 />
               ) : (
                 <View
@@ -422,10 +419,7 @@ class UserProfileScreen extends BaseScreen {
                 </View>
               )}
             </Tab>
-            <Tab
-              style={{ backgroundColor: this.theme.contentVariationBg }}
-              heading={lang.getString("tracks").toUpperCase()}
-            >
+            <Tab heading={lang.getString("tracks").toUpperCase()}>
               <DisplayComponent
                 key={this.item.id}
                 player={this.player}
@@ -433,13 +427,10 @@ class UserProfileScreen extends BaseScreen {
                 limit={10}
                 type="my-tracks"
                 typeId={this.item.id + "-0"}
-                displayType="vertical-grid"
+                displayType="small-list"
               />
             </Tab>
-            <Tab
-              style={{ backgroundColor: this.theme.contentVariationBg }}
-              heading={lang.getString("playlists").toUpperCase()}
-            >
+            <Tab heading={lang.getString("playlists").toUpperCase()}>
               <AlbumComponent
                 player={this.player}
                 navigation={this.props.navigation}

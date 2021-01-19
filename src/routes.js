@@ -23,7 +23,6 @@ import ArtistScreen from "./screens/ArtistsScreen";
 import GenresScreen from "./screens/GenresScreen";
 import ShowTagsScreen from "./screens/ShowTagsScreen";
 import LatestTracks from "./screens/LatestTracks";
-import TopFifty from "./screens/TopFifty";
 import Playlists from "./screens/Playlists";
 
 export default routes = {
@@ -31,7 +30,6 @@ export default routes = {
   auth: AuthScreen,
   artist: ArtistScreen,
   showTags: ShowTagsScreen,
-  topFifty: TopFifty,
   genres: GenresScreen,
   explore: ExploreScreen,
   feed: FeedScreen,

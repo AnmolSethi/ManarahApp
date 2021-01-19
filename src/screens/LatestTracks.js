@@ -2,16 +2,20 @@ import React from "react";
 import BaseScreen from "../utils/BaseScreen";
 import { connect } from "react-redux";
 import { View, Text } from "react-native";
-import { Container, Header } from "native-base";
+import { Container, Header, Icon } from "native-base";
 import { Platform } from "react-native";
 import DisplayComponent from "../components/DisplayComponent";
+import { TouchableOpacity } from "react-native";
 
 class LatestTracks extends BaseScreen {
   typeId = "";
   term = "";
+  type = "";
   offset = 0;
   limit = 10;
   cacheFilter = "";
+  displayType = "";
+  title = "";
 
   constructor(props) {
     super(props);
@@ -20,11 +24,12 @@ class LatestTracks extends BaseScreen {
       term: this.props.term,
     };
 
-    this.type = "latest";
+    this.type = this.props.navigation.getParam("type");
+    this.title = this.props.navigation.getParam("title");
+    this.typeId = this.props.navigation.getParam("typeId") ?? "";
     this.userid =
       this.props.theUserid !== undefined ? this.props.theUserid : "";
     this.term = this.props.term !== undefined ? this.props.term : "";
-    this.limit = 10;
     this.cacheFilter =
       this.props.cacheFilter !== undefined ? this.props.cacheFilter : "";
     this.component = this.props.component;
@@ -43,17 +48,32 @@ class LatestTracks extends BaseScreen {
             height: Platform.OS === "ios" ? 15 : 0,
           }}
         ></Header>
+
         <View
           style={{
             justifyContent: "center",
             width: "100%",
             height: 48,
+            paddingLeft: 15,
+            paddingRight: 25,
             backgroundColor: this.theme.accentColor,
             padding: 10,
             flexDirection: "row",
             marginBottom: 20,
           }}
         >
+          <View style={{ flex: 1, alignItems: "flex-start" }}>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.goBack();
+              }}
+            >
+              <Icon
+                name="arrow-round-back"
+                style={{ color: this.theme.whiteColor, fontSize: 30 }}
+              />
+            </TouchableOpacity>
+          </View>
           <Text
             style={{
               color: "#fff",
@@ -62,17 +82,17 @@ class LatestTracks extends BaseScreen {
               marginTop: 3,
             }}
           >
-            {"Latest Tracks"}
+            {this.title}
           </Text>
+          <View style={{ flex: 1 }}></View>
         </View>
 
         <DisplayComponent
           player={this.player}
           navigation={this.props.navigation}
-          limit={100}
-          type="latest"
-          typeId=""
-          displayType="vertical-grid"
+          type={this.type}
+          typeId={this.typeId}
+          displayType="small-list"
         />
       </Container>
     );

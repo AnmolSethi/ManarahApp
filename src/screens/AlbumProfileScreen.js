@@ -120,7 +120,7 @@ class AlbumProfileScreen extends BaseScreen {
                   }
                 );
               }}
-              style={{ marginLeft: 10 }}
+              style={{ marginLeft: 10, marginRight: 10 }}
             >
               <Icon
                 name="share"
@@ -158,7 +158,7 @@ class AlbumProfileScreen extends BaseScreen {
           limit={20}
           type="playlist"
           typeId={this.item.id}
-          displayType="lists"
+          displayType="small-list"
         />
       </Container>
     );

@@ -19,6 +19,7 @@ import DisplayComponent from "../components/DisplayComponent";
 import update from "immutability-helper";
 import TrackProgressComponent from "../components/TrackProgressComponent";
 import { BASE_CURRENCY, TRACK_PLAY_ACCESS } from "../config";
+import { GestureRecognizer } from "react-native-swipe-gestures";
 
 class PlayerScreen extends BaseScreen {
   item = null;
@@ -461,7 +462,7 @@ class PlayerScreen extends BaseScreen {
                     }}
                   >
                     <Icon
-                      name="arrow-left"
+                      name="arrow-down"
                       type="SimpleLineIcons"
                       style={{ color: this.theme.blackColor, fontSize: 30 }}
                     />
@@ -499,7 +500,10 @@ class PlayerScreen extends BaseScreen {
           style={{ margin: 0 }}
         >
           <View
-            style={{ flex: 1, backgroundColor: this.theme.contentVariationBg }}
+            style={{
+              flex: 1,
+              backgroundColor: this.theme.contentVariationBg,
+            }}
           >
             <Header
               hasTabs
@@ -522,7 +526,6 @@ class PlayerScreen extends BaseScreen {
 
         <ImageBackground
           blurRadius={1}
-          // source={{ uri: this.item.art_lg }}
           source={{ uri: "http://manarahapp.com/uploads/TestImage.jpeg" }}
           style={{ flex: 1, width: "100%", height: "100%" }}
         >
@@ -535,6 +538,18 @@ class PlayerScreen extends BaseScreen {
               alignContent: "center",
             }}
           >
+            <TouchableOpacity
+              onPress={() => {
+                this.minimize();
+              }}
+              style={{ position: "absolute", left: 20, top: 15 }}
+            >
+              <Icon
+                name="arrow-down"
+                type="SimpleLineIcons"
+                style={{ color: "#fff", fontSize: 25 }}
+              />
+            </TouchableOpacity>
             {/* {this.type !== "radio" ? (
               <TouchableOpacity
                 onPress={() => {
@@ -702,7 +717,11 @@ class PlayerScreen extends BaseScreen {
                     onPress={() => {
                       this.updateState({ infoModalVisible: true });
                     }}
-                    style={{ alignSelf: "center", padding: 5, marginLeft: 15 }}
+                    style={{
+                      alignSelf: "center",
+                      padding: 5,
+                      marginLeft: 15,
+                    }}
                   >
                     <Icon
                       name="info"
@@ -800,7 +819,7 @@ class PlayerScreen extends BaseScreen {
                 </TouchableOpacity>
               </View>
             </View>
-
+            {/* 
             <TouchableOpacity
               onPress={() => {
                 this.minimize();
@@ -812,7 +831,7 @@ class PlayerScreen extends BaseScreen {
                 type="SimpleLineIcons"
                 style={{ color: "#fff", fontSize: 25 }}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </ImageBackground>
       </Container>

@@ -4,12 +4,12 @@ import { View, TouchableOpacity, ActivityIndicator } from "react-native";
 import { Text } from "native-base";
 import lang from "../utils/lang";
 import { connect } from "react-redux";
-import { FlatGrid } from "react-native-super-grid";
 import EmptyComponent from "../utils/EmptyComponent";
 import Api from "../api";
 import { BASE_CURRENCY } from "../config";
 import FastImage from "react-native-fast-image";
 import { offlineSchema } from "../store/realmSchema";
+import { FlatList } from "react-native-gesture-handler";
 
 class AlbumComponent extends BaseScreen {
   type = "";
@@ -110,14 +110,11 @@ class AlbumComponent extends BaseScreen {
 
   render() {
     return (
-      <FlatGrid
+      <FlatList
         keyExtractor={(item) => item.id}
-        items={this.state.itemLists}
-        extraData={this.state}
-        scrollEnabled={true}
-        itemDimension={100}
-        spacing={15}
-        style={{ backgroundColor: this.theme.contentVariationBg }}
+        data={this.state.itemLists}
+        style={{ flex: 1 }}
+        ref="_flatList"
         onEndReachedThreshold={0.5}
         onEndReached={() => {
           if (this.state.itemLists.length > 0 && !this.state.itemListNotEnd) {
@@ -125,26 +122,24 @@ class AlbumComponent extends BaseScreen {
           }
           return true;
         }}
-        fixed={false}
-        style={{ height: 200 }}
+        extraData={this.state}
+        refreshing={this.state.refreshing}
+        onRefresh={() => {
+          this.offset = 0;
+          this.updateState({ refreshing: true });
+          this.loadLists(false);
+        }}
+        ListHeaderComponent={
+          this.props.headerComponent !== undefined
+            ? this.props.headerComponent
+            : null
+        }
         ListFooterComponent={
           <View style={{ paddingVertical: 20 }}>
             {this.state.fetchFinished ? (
               <Text />
             ) : (
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignContent: "center",
-                  width: "100%",
-                  alignItems: "center",
-                }}
-              >
-                <ActivityIndicator
-                  style={{ alignSelf: "center" }}
-                  size="large"
-                />
-              </View>
+              <ActivityIndicator size="large" />
             )}
           </View>
         }
@@ -152,77 +147,169 @@ class AlbumComponent extends BaseScreen {
           !this.state.fetchFinished ? (
             <Text />
           ) : (
-            <EmptyComponent text={lang.getString("no_playlists_found")} />
+            <EmptyComponent text={lang.getString("no_tracks_found")} />
           )
         }
-        renderItem={({ item, index }) => this.displayGridItem(item)}
+        renderItem={({ item, index }) => {
+          return this.displaySmallListItem(item, index);
+        }}
       />
+
+      // <FlatGrid
+      //   keyExtractor={(item) => item.id}
+      //   items={this.state.itemLists}
+      //   extraData={this.state}
+      //   scrollEnabled={true}
+      //   itemDimension={100}
+      //   spacing={15}
+      //   style={{ backgroundColor: this.theme.contentVariationBg }}
+      //   onEndReachedThreshold={0.5}
+      //   onEndReached={() => {
+      //     if (this.state.itemLists.length > 0 && !this.state.itemListNotEnd) {
+      //       this.loadLists(true);
+      //     }
+      //     return true;
+      //   }}
+      //   fixed={false}
+      //   style={{ height: 200 }}
+      //   ListFooterComponent={
+      //     <View style={{ paddingVertical: 20 }}>
+      //       {this.state.fetchFinished ? (
+      //         <Text />
+      //       ) : (
+      //         <View
+      //           style={{
+      //             justifyContent: "center",
+      //             alignContent: "center",
+      //             width: "100%",
+      //             alignItems: "center",
+      //           }}
+      //         >
+      //           <ActivityIndicator
+      //             style={{ alignSelf: "center" }}
+      //             size="large"
+      //           />
+      //         </View>
+      //       )}
+      //     </View>
+      //   }
+      //   ListEmptyComponent={
+      //     !this.state.fetchFinished ? (
+      //       <Text />
+      //     ) : (
+      //       <EmptyComponent text={lang.getString("no_playlists_found")} />
+      //     )
+      //   }
+      //   renderItem={({ item, index }) => this.displayGridItem(item)}
+      // />
     );
   }
 
-  displayGridItem(item) {
+  displaySmallListItem(item, index) {
     if (item === false) return null;
+
     return (
-      <View style={{ flex: 1 }}>
-        <TouchableOpacity
-          onPress={() => {
-            this.openPlaylist(item);
-          }}
-        >
+      <TouchableOpacity
+        onPress={() => {
+          this.openPlaylist(item);
+        }}
+      >
+        <View style={{ flex: 1, flexDirection: "row", padding: 10 }}>
           <FastImage
-            style={{
-              width: "100%",
-              height: 130,
-              marginBottom: 10,
-              borderColor: "#D1D1D1",
-              borderWidth: 1,
-            }}
+            style={{ width: 40, height: 40, marginTop: 4 }}
             source={{
               uri: item.art,
             }}
             resizeMode={FastImage.resizeMode.cover}
-          >
-            {this.props.setup.enable_store && item.price > 0 ? (
-              <View
-                style={{
-                  backgroundColor: this.theme.brandPrimary,
-                  padding: 5,
-                  borderRadius: 100,
-                  width: 80,
-                  margin: 7,
-                  alignContent: "center",
-                }}
-              >
-                <Text
-                  numberOfLines={1}
-                  style={{ color: "#fff", alignSelf: "center" }}
-                >
-                  {BASE_CURRENCY}
-                  {item.price}
-                </Text>
-              </View>
-            ) : null}
-          </FastImage>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            this.openPlaylist(item);
-          }}
-        >
-          <Text
-            numberOfLines={1}
-            style={{
-              fontSize: 15,
-              color: this.theme.blackColor,
-              fontWeight: "500",
-            }}
-          >
-            {item.name}
-          </Text>
-        </TouchableOpacity>
-      </View>
+          />
+          <View style={{ flex: 1, marginLeft: 10, flexDirection: "column" }}>
+            <Text
+              style={{
+                color: this.theme.blackColor,
+                fontSize: 14,
+                fontWeight: "500",
+              }}
+            >
+              {item.name}
+            </Text>
+            <Text
+              style={{
+                color: this.theme.greyColor,
+                fontSize: 13,
+                marginTop: 5,
+              }}
+            >
+              {item.user.full_name}
+            </Text>
+          </View>
+        </View>
+      </TouchableOpacity>
     );
   }
+
+  // displayGridItem(item) {
+  //   if (item === false) return null;
+  //   return (
+  //     <View style={{ flex: 1 }}>
+  //       <TouchableOpacity
+  //         onPress={() => {
+  //           this.openPlaylist(item);
+  //         }}
+  //       >
+  //         <FastImage
+  //           style={{
+  //             width: "100%",
+  //             height: 130,
+  //             marginBottom: 10,
+  //             borderColor: "#D1D1D1",
+  //             borderWidth: 1,
+  //           }}
+  //           source={{
+  //             uri: item.art,
+  //           }}
+  //           resizeMode={FastImage.resizeMode.cover}
+  //         >
+  //           {this.props.setup.enable_store && item.price > 0 ? (
+  //             <View
+  //               style={{
+  //                 backgroundColor: this.theme.brandPrimary,
+  //                 padding: 5,
+  //                 borderRadius: 100,
+  //                 width: 80,
+  //                 margin: 7,
+  //                 alignContent: "center",
+  //               }}
+  //             >
+  //               <Text
+  //                 numberOfLines={1}
+  //                 style={{ color: "#fff", alignSelf: "center" }}
+  //               >
+  //                 {BASE_CURRENCY}
+  //                 {item.price}
+  //               </Text>
+  //             </View>
+  //           ) : null}
+  //         </FastImage>
+  //       </TouchableOpacity>
+  //       <TouchableOpacity
+  //         onPress={() => {
+  //           this.openPlaylist(item);
+  //         }}
+  //       >
+  //         <Text
+  //           numberOfLines={1}
+  //           style={{
+  //             fontSize: 15,
+  //             color: this.theme.blackColor,
+  //             fontWeight: "500",
+  //           }}
+  //         >
+  //           {item.name}
+  //         </Text>
+  //       </TouchableOpacity>
+  //     </View>
+  //   );
+  // }
 }
 
 export default connect((state) => {

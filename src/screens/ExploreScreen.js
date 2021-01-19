@@ -57,24 +57,53 @@ class ExploreScreen extends BaseScreen {
         </Header>
 
         <ScrollView>
-          <View>
-            <Text
+          <View style={{ height: 390 }}>
+            <View
               style={{
-                fontSize: 17,
-                fontWeight: "500",
-                margin: 10,
-                color: this.theme.brandPrimary,
+                flexDirection: "row",
+                justifyContent: "space-between",
               }}
             >
-              {lang.getString("made-for-you")}
-            </Text>
+              <Text
+                style={{
+                  fontSize: 17,
+                  fontWeight: "500",
+                  margin: 10,
+                  color: this.theme.brandPrimary,
+                }}
+              >
+                {lang.getString("made-for-you")}
+              </Text>
+
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate("latestTracks", {
+                    player: this.player,
+                    type: "global-spotlight",
+                    displayType: "small-list",
+                    title: lang.getString("made-for-you"),
+                  });
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontWeight: "500",
+                    margin: 10,
+                    color: this.theme.brandPrimary,
+                  }}
+                >
+                  {"View All"}
+                </Text>
+              </TouchableOpacity>
+            </View>
             <DisplayComponent
               player={this.player}
               navigation={this.props.navigation}
-              limit={4}
+              limit={5}
               type="global-spotlight"
               typeId=""
-              displayType="horizontal-grid"
+              displayType="small-list"
             />
           </View>
 
@@ -125,7 +154,7 @@ class ExploreScreen extends BaseScreen {
               limit={6}
             />
           </View>
-          <View style={{ height: 600 }}>
+          <View style={{ height: 450 }}>
             <View
               style={{
                 flexDirection: "row",
@@ -147,6 +176,9 @@ class ExploreScreen extends BaseScreen {
                 onPress={() => {
                   this.props.navigation.navigate("latestTracks", {
                     player: this.player,
+                    type: "latest",
+                    displayType: "small-list",
+                    title: "Latest Tracks",
                   });
                 }}
               >
@@ -169,7 +201,7 @@ class ExploreScreen extends BaseScreen {
               limit={6}
               type="latest"
               typeId=""
-              displayType="vertical-grid"
+              displayType="small-list"
             />
           </View>
 
@@ -193,8 +225,11 @@ class ExploreScreen extends BaseScreen {
 
               <TouchableOpacity
                 onPress={() => {
-                  this.props.navigation.navigate("topFifty", {
+                  this.props.navigation.navigate("latestTracks", {
                     player: this.player,
+                    type: "charts-top",
+                    typeId: "all/this-week",
+                    title: "Top 50",
                   });
                 }}
               >
@@ -222,7 +257,7 @@ class ExploreScreen extends BaseScreen {
             />
           </View>
 
-          <View style={{ height: 240 }}>
+          <View style={{ height: 220 }}>
             <View
               style={{
                 flexDirection: "row",
@@ -287,10 +322,11 @@ class ExploreScreen extends BaseScreen {
               extraData={this.state}
               itemDimension={100}
               spacing={15}
-              style={{ backgroundColor: this.theme.contentVariationBg }}
+              style={{
+                borderRadius: 8,
+              }}
               onEndReachedThreshold={0.5}
               fixed={false}
-              style={{ height: 200 }}
               ListEmptyComponent={
                 !this.state.tagsList.length !== 0 ? (
                   <Text />
@@ -311,11 +347,11 @@ class ExploreScreen extends BaseScreen {
     return (
       <Button
         title={"#" + item.title}
+        color={this.theme.brandPrimary}
         style={{
           color: "white",
           fontWeight: "700",
           fontStyle: "italic",
-          backgroundColor: "#000",
         }}
         onPress={() =>
           this.props.navigation.navigate("showTags", {

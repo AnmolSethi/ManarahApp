@@ -25,6 +25,7 @@ import { trackSchema } from "../store/realmSchema";
 import Util from "./Util";
 import Api from "../api";
 import storage from "../store/storage";
+import GestureRecognizer from "react-native-swipe-gestures";
 
 const Realm = require("realm");
 var RNFS = require("react-native-fs");
@@ -879,7 +880,6 @@ class BaseScreen extends Component {
       key: this.props.apikey,
       limit: 10,
     }).then((result) => {
-      console.log(result);
       let lists = [];
       lists.push(...result);
       this.updateState({
@@ -889,6 +889,7 @@ class BaseScreen extends Component {
   }
 
   loadGenres() {
+    // this.state.genres.clear();
     Api.getWithCache(
       "genres",
       {

@@ -1,14 +1,9 @@
 import React from "react";
 import BaseScreen from "../utils/BaseScreen";
-import { Platform, View, Text } from "react-native";
-import { Container, Content, Tab, Tabs, ScrollableTab } from "native-base";
-import lang from "../utils/lang";
+import { Container, Content } from "native-base";
 import { connect } from "react-redux";
-import light from "../themes/light";
 import DisplayComponent from "../components/DisplayComponent";
 import PleaseLoginComponent from "../utils/PleaseLoginComponent";
-import { AdMobBanner } from "react-native-admob";
-import { ADMOB_ID } from "../config";
 
 class FeedScreen extends BaseScreen {
   constructor(props) {
@@ -16,7 +11,7 @@ class FeedScreen extends BaseScreen {
     this.activeMenu = "feed";
     this.state = {
       ...this.state,
-      genres: [],
+      // genres: [],
     };
 
     this.props.navigation.addListener("didFocus", () => {
@@ -41,7 +36,7 @@ class FeedScreen extends BaseScreen {
               type="feed"
               navigation={this.props.navigation}
               typeId=""
-              displayType="feed-list"
+              displayType="small-list"
             />
           )}
         </Content>
