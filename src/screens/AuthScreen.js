@@ -7,17 +7,15 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  ImageBackground,
+  StyleSheet,
 } from "react-native";
-import { Container, Icon, Button, Form, Item, Input, Toast } from "native-base";
+import { Container, Form, Item, Input, Toast } from "native-base";
 import lang from "../utils/lang";
 import { connect } from "react-redux";
 import Spinner from "react-native-loading-spinner-overlay";
 import Api from "../api";
 import storage from "../store/storage";
 import { FBLoginManager } from "react-native-facebook-login";
-import FastImage from "react-native-fast-image";
-import { ENABLE_FB_LOGIN } from "../config";
 
 class AuthScreen extends BaseScreen {
   constructor(props) {
@@ -35,33 +33,6 @@ class AuthScreen extends BaseScreen {
       email: "",
       name: "",
     };
-
-    setInterval(() => {
-      let dPosition = 0;
-      let dImage = this.props.setup.slide_image_1
-        ? this.props.setup.slide_image_1
-        : require("../images/topo1.png");
-      if (this.state.position === 0) {
-        dPosition = 1;
-        dImage = this.props.setup.slide_image_2
-          ? this.props.setup.slide_image_2
-          : require("../images/topo2.png");
-      } else if (this.state.position === 1) {
-        dPosition = 2;
-        dImage = this.props.setup.slide_image_3
-          ? this.props.setup.slide_image_3
-          : require("../images/topo3.png");
-      } else if (this.state.position === 2) {
-        dPosition = 0;
-        dImage = this.props.setup.slide_image_1
-          ? this.props.setup.slide_image_1
-          : require("../images/topo1.png");
-      }
-      this.updateState({
-        image: dImage,
-        position: dPosition,
-      });
-    }, 3000);
   }
 
   submitLogin() {
@@ -209,20 +180,14 @@ class AuthScreen extends BaseScreen {
   }
 
   render() {
-    const resizeMode = "cover";
     return this.showContent(
-      <Container style={{ flex: 1 }}>
+      <Container style={{ flex: 1, backgroundColor: this.theme.darkColor }}>
         <Spinner
           visible={this.state.loading}
           textContent={""}
           textStyle={{ color: "#FFF" }}
         />
         <View style={{ flex: 1 }}>
-          <Image
-            style={{ flex: 1, resizeMode, width: null, height: null }}
-            source={require("../images/bg.jpeg")}
-          />
-
           <View
             style={{
               position: "absolute",
@@ -239,7 +204,7 @@ class AuthScreen extends BaseScreen {
               <View
                 style={{
                   flex: 1,
-                  padding: 20,
+                  padding: 5,
                   marginTop: 10,
                   flexDirection: "row",
                   justifyContent: "space-between",
@@ -248,40 +213,62 @@ class AuthScreen extends BaseScreen {
                 <TouchableOpacity
                   onPress={() => this.props.navigation.goBack()}
                 >
-                  <Icon
-                    name="arrow-left"
-                    type="SimpleLineIcons"
-                    style={{ fontSize: 20, color: "#FFF" }}
+                  <Image
+                    source={require("../images/back.png")}
+                    style={{
+                      width: 30,
+                      height: 30,
+                    }}
                   />
                 </TouchableOpacity>
                 <Text
-                  style={{ fontSize: 20, color: "white", fontWeight: "600" }}
+                  style={{
+                    fontSize: 20,
+                    color: this.theme.textColor,
+                    fontWeight: "600",
+                  }}
                 >
                   {this.state.currentPage === "login"
                     ? lang.getString("login")
-                    : "Registration"}
+                    : "Signup"}
                 </Text>
                 <TouchableOpacity
                   onPress={() => this.props.navigation.goBack()}
                 >
-                  <Icon
-                    name="close"
-                    type="SimpleLineIcons"
-                    style={{ fontSize: 20, color: "#FFF" }}
+                  <Image
+                    source={require("../images/exit.png")}
+                    style={{
+                      width: 30,
+                      height: 30,
+                      marginRight: 5,
+                    }}
                   />
                 </TouchableOpacity>
               </View>
 
               <Image
-                source={require("../images/white.png")}
+                source={require("../images/logo.png")}
                 style={{
-                  width: 250,
-                  marginTop: 100,
-                  height: 120,
+                  marginTop: 120,
+                  width: 138,
+                  height: 104,
                   resizeMode: "contain",
                   alignSelf: "center",
+                  flex: 1,
                 }}
               />
+              <Text
+                style={{
+                  alignSelf: "center",
+                  marginTop: 20,
+                  marginBottom: 20,
+                  fontSize: 20,
+                  fontWeight: "500",
+                  color: this.theme.brandPrimary,
+                }}
+              >
+                {"Adibiat"}
+              </Text>
               <View
                 style={{
                   flex: 1,
@@ -296,13 +283,14 @@ class AuthScreen extends BaseScreen {
                       <Item
                         style={{
                           marginBottom: 10,
-                          backgroundColor: "#FFF",
+                          backgroundColor: this.theme.textFieldColor,
                           paddingLeft: 7,
                         }}
                       >
                         <Input
-                          style={{ color: "grey" }}
+                          style={{ color: this.theme.textColor }}
                           placeholder={lang.getString("username")}
+                          placeholderTextColor={this.theme.textColor}
                           onChangeText={(t) =>
                             this.updateState({ username: t })
                           }
@@ -311,14 +299,15 @@ class AuthScreen extends BaseScreen {
                       <Item
                         style={{
                           marginBottom: 20,
-                          backgroundColor: "#FFF",
+                          backgroundColor: this.theme.textFieldColor,
                           paddingLeft: 7,
                         }}
                       >
                         <Input
                           secureTextEntry
                           placeholder={lang.getString("password")}
-                          style={{ color: "grey" }}
+                          placeholderTextColor={this.theme.textColor}
+                          style={{ color: this.theme.textColor }}
                           onChangeText={(t) =>
                             this.updateState({ password: t })
                           }
@@ -327,26 +316,17 @@ class AuthScreen extends BaseScreen {
                     </Form>
 
                     <TouchableOpacity onPress={() => this.submitLogin()}>
-                      <ImageBackground
-                        source={require("../images/btn.png")}
-                        style={{
-                          width: 300,
-                          alignItems: "center",
-                          marginTop: 10,
-                          height: 40,
-                          justifyContent: "center",
-                        }}
-                      >
+                      <View style={styles.button}>
                         <Text
                           style={{
                             alignSelf: "center",
                             fontSize: 18,
-                            color: "#fff",
+                            color: this.theme.textColor,
                           }}
                         >
                           {lang.getString("login")}
                         </Text>
-                      </ImageBackground>
+                      </View>
                     </TouchableOpacity>
 
                     <View
@@ -361,7 +341,7 @@ class AuthScreen extends BaseScreen {
                         style={{
                           alignSelf: "flex-start",
                           fontSize: 12,
-                          color: "grey",
+                          color: this.theme.textColor,
                         }}
                       >
                         {"Do not have an account?"}
@@ -375,13 +355,13 @@ class AuthScreen extends BaseScreen {
                           style={{
                             alignSelf: "flex-start",
                             fontSize: 12,
-                            color: "black",
+                            color: this.theme.textColor,
                             marginLeft: 5,
                             textDecorationLine: "underline",
                             fontWeight: "bold",
                           }}
                         >
-                          {"Registration"}
+                          {"Register Here"}
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -394,26 +374,28 @@ class AuthScreen extends BaseScreen {
                       <Item
                         style={{
                           marginBottom: 10,
-                          backgroundColor: "#FFF",
+                          backgroundColor: this.theme.textFieldColor,
                           paddingLeft: 7,
                         }}
                       >
                         <Input
-                          style={{ color: "black" }}
+                          style={{ color: this.theme.textColor }}
                           placeholder={lang.getString("fullname")}
+                          placeholderTextColor={this.theme.textColor}
                           onChangeText={(t) => this.updateState({ name: t })}
                         />
                       </Item>
                       <Item
                         style={{
                           marginBottom: 10,
-                          backgroundColor: "#FFF",
+                          backgroundColor: this.theme.textFieldColor,
                           paddingLeft: 7,
                         }}
                       >
                         <Input
-                          style={{ color: "black" }}
+                          style={{ color: this.theme.textColor }}
                           placeholder={lang.getString("username")}
+                          placeholderTextColor={this.theme.textColor}
                           onChangeText={(t) =>
                             this.updateState({ username: t })
                           }
@@ -422,27 +404,29 @@ class AuthScreen extends BaseScreen {
                       <Item
                         style={{
                           marginBottom: 10,
-                          backgroundColor: "#FFF",
+                          backgroundColor: this.theme.textFieldColor,
                           paddingLeft: 7,
                         }}
                       >
                         <Input
-                          style={{ color: "black" }}
+                          style={{ color: this.theme.textColor }}
                           placeholder={lang.getString("email-address")}
+                          placeholderTextColor={this.theme.textColor}
                           onChangeText={(t) => this.updateState({ email: t })}
                         />
                       </Item>
                       <Item
                         style={{
                           marginBottom: 20,
-                          backgroundColor: "#FFF",
+                          backgroundColor: this.theme.textFieldColor,
                           paddingLeft: 7,
                         }}
                       >
                         <Input
                           secureTextEntry
                           placeholder={lang.getString("password")}
-                          style={{ color: "black" }}
+                          placeholderTextColor={this.theme.textColor}
+                          style={{ color: this.theme.textColor }}
                           onChangeText={(t) =>
                             this.updateState({ password: t })
                           }
@@ -451,26 +435,17 @@ class AuthScreen extends BaseScreen {
                     </Form>
 
                     <TouchableOpacity onPress={() => this.submitSignup()}>
-                      <ImageBackground
-                        source={require("../images/btn.png")}
-                        style={{
-                          width: 300,
-                          alignItems: "center",
-                          marginTop: 10,
-                          height: 40,
-                          justifyContent: "center",
-                        }}
-                      >
+                      <View style={styles.button}>
                         <Text
                           style={{
                             alignSelf: "center",
                             fontSize: 18,
-                            color: "#fff",
+                            color: this.theme.textColor,
                           }}
                         >
-                          {"Complete"}
+                          {"LOGIN"}
                         </Text>
-                      </ImageBackground>
+                      </View>
                     </TouchableOpacity>
 
                     <View
@@ -485,7 +460,7 @@ class AuthScreen extends BaseScreen {
                         style={{
                           alignSelf: "flex-start",
                           fontSize: 12,
-                          color: "grey",
+                          color: this.theme.textColor,
                         }}
                       >
                         {"Already have an account?"}
@@ -499,13 +474,13 @@ class AuthScreen extends BaseScreen {
                           style={{
                             alignSelf: "flex-start",
                             fontSize: 12,
-                            color: "black",
+                            color: this.theme.textColor,
                             marginLeft: 5,
                             textDecorationLine: "underline",
                             fontWeight: "bold",
                           }}
                         >
-                          {"Login"}
+                          {"Login Here"}
                         </Text>
                       </TouchableOpacity>
                     </View>
@@ -591,6 +566,16 @@ class AuthScreen extends BaseScreen {
     });
   }
 }
+const styles = StyleSheet.create({
+  button: {
+    width: 300,
+    alignItems: "center",
+    marginBottom: 10,
+    height: 40,
+    justifyContent: "center",
+    backgroundColor: "#3F5C57",
+  },
+});
 
 export default connect((state) => {
   return {

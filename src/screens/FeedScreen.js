@@ -4,6 +4,7 @@ import { Container, Content } from "native-base";
 import { connect } from "react-redux";
 import DisplayComponent from "../components/DisplayComponent";
 import PleaseLoginComponent from "../utils/PleaseLoginComponent";
+import { View, Text } from "react-native";
 
 class FeedScreen extends BaseScreen {
   constructor(props) {
@@ -11,7 +12,6 @@ class FeedScreen extends BaseScreen {
     this.activeMenu = "feed";
     this.state = {
       ...this.state,
-      // genres: [],
     };
 
     this.props.navigation.addListener("didFocus", () => {
@@ -27,8 +27,30 @@ class FeedScreen extends BaseScreen {
 
   render() {
     return this.show(
-      <Container style={{ flex: 1 }}>
-        <Content style={{ backgroundColor: this.theme.contentVariationBg }}>
+      <Container style={{ flex: 1, backgroundColor: this.theme.darkColor }}>
+        <View
+          style={{
+            justifyContent: "center",
+            width: "100%",
+            height: 48,
+            backgroundColor: this.theme.tabColor,
+            padding: 10,
+            flexDirection: "row",
+          }}
+        >
+          <Text
+            style={{
+              color: this.theme.textColor,
+              fontSize: 17,
+              marginLeft: 10,
+              marginTop: 3,
+              fontWeight: "bold",
+            }}
+          >
+            {"Feed"}
+          </Text>
+        </View>
+        <Content style={{ backgroundColor: this.theme.darkColor }}>
           {this.props.userid === null || this.props.userid === "" ? (
             <PleaseLoginComponent navigation={this.props.navigation} />
           ) : (

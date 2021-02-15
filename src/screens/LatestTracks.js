@@ -2,10 +2,11 @@ import React from "react";
 import BaseScreen from "../utils/BaseScreen";
 import { connect } from "react-redux";
 import { View, Text } from "react-native";
-import { Container, Header, Icon } from "native-base";
+import { Container, Header } from "native-base";
 import { Platform } from "react-native";
 import DisplayComponent from "../components/DisplayComponent";
 import { TouchableOpacity } from "react-native";
+import { Image } from "react-native";
 
 class LatestTracks extends BaseScreen {
   typeId = "";
@@ -38,7 +39,7 @@ class LatestTracks extends BaseScreen {
 
   render() {
     return this.show(
-      <Container style={{ flex: 1 }}>
+      <Container style={{ flex: 1, backgroundColor: this.theme.darkColor }}>
         <Header
           hasTabs
           noShadow
@@ -53,13 +54,13 @@ class LatestTracks extends BaseScreen {
           style={{
             justifyContent: "center",
             width: "100%",
-            height: 48,
+            height: 50,
             paddingLeft: 15,
             paddingRight: 25,
-            backgroundColor: this.theme.accentColor,
+            backgroundColor: this.theme.tabColor,
             padding: 10,
             flexDirection: "row",
-            marginBottom: 20,
+            marginBottom: 10,
           }}
         >
           <View style={{ flex: 1, alignItems: "flex-start" }}>
@@ -68,18 +69,17 @@ class LatestTracks extends BaseScreen {
                 this.props.navigation.goBack();
               }}
             >
-              <Icon
-                name="arrow-round-back"
-                style={{ color: this.theme.whiteColor, fontSize: 30 }}
-              />
+              <Image
+                source={require("../images/icons/back.png")}
+                style={{ height: 30, width: 30 }}
+              ></Image>
             </TouchableOpacity>
           </View>
           <Text
             style={{
-              color: "#fff",
-              fontSize: 17,
-              marginLeft: 10,
-              marginTop: 3,
+              color: this.theme.textColor,
+              fontSize: 16,
+              marginTop: 6,
             }}
           >
             {this.title}

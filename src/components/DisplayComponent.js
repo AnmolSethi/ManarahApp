@@ -6,7 +6,7 @@ import {
   ActivityIndicator,
   FlatList,
 } from "react-native";
-import { Icon, Card, CardItem, Text, Body, Left } from "native-base";
+import { Icon, Card, CardItem, Text, Body, Left, Toast } from "native-base";
 import lang from "../utils/lang";
 import { connect } from "react-redux";
 import { FlatGrid } from "react-native-super-grid";
@@ -16,8 +16,10 @@ import FastImage from "react-native-fast-image";
 import { offlineSchema, trackSchema } from "../store/realmSchema";
 import { BASE_CURRENCY } from "../config";
 import Time from "../utils/Time";
-import Container from "../../native-base-theme/components/Container";
-import { ThemeConsumer } from "react-native-elements";
+import { Image } from "react-native";
+import { Share } from "react-native";
+import update from "immutability-helper";
+import { Platform } from "react-native";
 const Realm = require("realm");
 
 class DisplayComponent extends BaseScreen {
@@ -133,7 +135,7 @@ class DisplayComponent extends BaseScreen {
           this.updateState({
             itemLists: lists,
             fetchFinished: true,
-            itemListNotEnd: result.length < 1 ? true : false,
+            itemListNotEnd: result.length > 1 ? true : false,
             refreshing: false,
           });
         })
@@ -321,9 +323,7 @@ class DisplayComponent extends BaseScreen {
                 <EmptyComponent text={lang.getString("no_tracks_found")} />
               )
             }
-            renderItem={({ item, index }) =>
-              this.displayGridAlbumItem(item, true)
-            }
+            renderItem={({ item }) => this.displayGridAlbumItem(item, true)}
           />
         );
         break;
@@ -332,9 +332,9 @@ class DisplayComponent extends BaseScreen {
           <FlatList
             keyExtractor={(item) => item.id}
             data={this.state.itemLists}
-            style={{ flex: 1 }}
+            // style={{ flex: 1 }}
             ref="_flatList"
-            onEndReachedThreshold={0.5}
+            onEndReachedThreshold={0.1}
             onEndReached={() => {
               if (
                 this.state.itemLists.length > 0 &&
@@ -357,7 +357,7 @@ class DisplayComponent extends BaseScreen {
                 : null
             }
             ListFooterComponent={
-              <View style={{ paddingVertical: 20 }}>
+              <View>
                 {this.state.fetchFinished ? (
                   <Text />
                 ) : (
@@ -479,61 +479,197 @@ class DisplayComponent extends BaseScreen {
     }
   }
 
+  addToPlaylist(track) {
+    this.updateState({
+      playlistTrackId: track,
+      playlistModalVisible: true,
+    });
+  }
+
   displaySmallListItem(item, index) {
     let component = this;
     return (
-      <TouchableOpacity
-        onPress={() => {
-          if (this.component !== undefined) {
-            this.component.updateState({ nextupModalVisible: false });
-            this.component.reload(
-              item,
-              this.type,
-              this.typeId,
-              index,
-              component
-            );
-          } else {
-            this.play(item, this.state.type, this.state.typeId, index);
-          }
+      <View
+        style={{
+          backgroundColor: this.theme.tabColor,
+          margin: 10,
+          borderRadius: 8,
         }}
       >
-        <View style={{ flex: 1, flexDirection: "row", padding: 10 }}>
-          <FastImage
-            style={{ width: 40, height: 40, marginTop: 4, borderRadius: 4 }}
-            source={{
-              uri: item.art_md,
-            }}
-            resizeMode={FastImage.resizeMode.cover}
-          />
-          <View style={{ flex: 1, marginLeft: 10, flexDirection: "column" }}>
-            <Text
-              style={{
-                color: this.theme.blackColor,
-                fontSize: 14,
-                fontWeight: "500",
-              }}
-            >
-              {item.title}
-            </Text>
+        <TouchableOpacity
+          onPress={() => {
+            if (this.component !== undefined) {
+              this.component.updateState({ nextupModalVisible: false });
+              this.component.reload(
+                item,
+                this.type,
+                this.typeId,
+                index,
+                component
+              );
+            } else {
+              this.play(item, this.state.type, this.state.typeId, index);
+            }
+          }}
+        >
+          <View style={{ flex: 1, flexDirection: "row", padding: 10 }}>
             <TouchableOpacity
               onPress={() => {
                 this.openProfile(item.reposter);
               }}
             >
-              <Text
+              <FastImage
                 style={{
-                  color: this.theme.greyColor,
-                  fontSize: 13,
-                  marginTop: 5,
+                  width: 70,
+                  height: 70,
+                  marginTop: 4,
+                  borderRadius: 35,
+                }}
+                source={{
+                  uri: item.art_md,
+                }}
+                resizeMode={FastImage.resizeMode.cover}
+              />
+            </TouchableOpacity>
+            <View style={{ flex: 1, marginLeft: 10, flexDirection: "row" }}>
+              <View
+                style={{ flex: 1, marginLeft: 10, flexDirection: "column" }}
+              >
+                <Text
+                  style={{
+                    color: "#94A7AF",
+                    fontSize: 14,
+                    fontWeight: "500",
+                  }}
+                >
+                  {item.user.username}
+                </Text>
+
+                <Text
+                  style={{
+                    color: this.theme.textColor,
+                    fontSize: 16,
+                    textAlign: "left",
+                    marginTop: 6,
+                    marginBottom: 6,
+                  }}
+                >
+                  {item.title}
+                </Text>
+                <View style={{ flexDirection: "row" }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      item.hasLiked = item.hasLiked === 1 ? 0 : 1;
+                      if (item.hasLiked === 1) {
+                        Toast.show({
+                          text: lang.getString("you-love-this"),
+                          textStyle: {
+                            color: this.theme.brandPrimary,
+                            textAlign: "center",
+                          },
+                        });
+                      }
+                      this.updateState(
+                        update(this.state, {
+                          item: { $set: item },
+                        })
+                      );
+
+                      Api.get("like/item", {
+                        userid: this.props.userid,
+                        key: this.props.apikey,
+                        type: "track",
+                        type_id: item.id,
+                      });
+                    }}
+                  >
+                    <Image
+                      source={
+                        item.hasLiked === 1
+                          ? require("../images/icons/liked.png")
+                          : require("../images/icons/Likes.png")
+                      }
+                      style={{ height: 20, width: 20, marginRight: 5 }}
+                    ></Image>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      let message = lang.getString("share-track-message");
+                      if (Platform.OS !== "ios") message += " " + item.link;
+                      Share.share(
+                        {
+                          message: message,
+                          url: item.link,
+                          title: lang.getString("share-track"),
+                        },
+                        {
+                          dialogTitle: lang.getString("share-track"),
+                        }
+                      );
+                    }}
+                  >
+                    <Image
+                      source={require("../images/icons/Share.png")}
+                      style={{ height: 20, width: 20, marginRight: 5 }}
+                    ></Image>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      this.addToPlaylist(item.id);
+                    }}
+                  >
+                    <Image
+                      source={require("../images/icons/Add.png")}
+                      style={{ height: 20, width: 20, marginRight: 5 }}
+                    ></Image>
+                  </TouchableOpacity>
+
+                  <Image
+                    source={require("../images/icons/listen_later.png")}
+                    style={{ height: 20, width: 20, marginRight: 5 }}
+                  ></Image>
+                  <Image
+                    source={require("../images/icons/Report.png")}
+                    style={{ height: 20, width: 20, marginRight: 5 }}
+                  ></Image>
+                  <Image
+                    source={require("../images/icons/go_to_track.png")}
+                    style={{ height: 20, width: 20, marginRight: 5 }}
+                  ></Image>
+                </View>
+              </View>
+              {item.track_file.endsWith("mp4") ? (
+                <Image
+                  source={require("../images/icons/music_video.png")}
+                  style={{ height: 20, width: 20, marginRight: 5 }}
+                ></Image>
+              ) : (
+                <View></View>
+              )}
+
+              <View
+                style={{
+                  borderColor: this.theme.tabColor,
+                  paddingLeft: 2,
+                  borderWidth: 2,
+                  borderRadius: 2,
                 }}
               >
-                {item.reposter.full_name}
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={{
+                    color: this.theme.textColor,
+                    fontSize: 16,
+                    textAlign: "right",
+                  }}
+                >
+                  {"#" + item.tag}
+                </Text>
+              </View>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
     );
   }
   displayListItem(item, index) {

@@ -1,9 +1,9 @@
 export default en = {
-  "explore-music": "Explore Music",
+  "explore-music": "EXPLORE",
   "welcome-note":
     "Find the Music you love. Discover new tracks. Connect directly with your favourite artists.",
-  login: "Login",
-  "signup-for-account": "Register for new account",
+  login: "LOGIN",
+  "signup-for-account": "SIGN UP",
   username: "Username",
   password: "Password",
   signup: "Signup",

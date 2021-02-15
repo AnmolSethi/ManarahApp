@@ -71,20 +71,11 @@ class GenresScreen extends BaseScreen {
   render() {
     return this.show(
       <Container style={{ flex: 1 }}>
-        <Header
-          hasTabs
-          noShadow
-          style={{
-            paddingTop: Platform.OS === "ios" ? 18 : 0,
-            backgroundColor: this.theme.accentColor,
-            height: Platform.OS === "ios" ? 15 : 0,
-          }}
-        ></Header>
         <View
           style={{
             width: "100%",
             height: 48,
-            backgroundColor: this.theme.accentColor,
+            backgroundColor: this.theme.tabColor,
             padding: 10,
             flexDirection: "row",
             justifyContent: "center",
@@ -92,7 +83,7 @@ class GenresScreen extends BaseScreen {
         >
           <Text
             style={{
-              color: this.theme.whiteColor,
+              color: this.theme.textColor,
               fontSize: 17,
               marginLeft: 10,
               marginTop: 3,
@@ -125,7 +116,7 @@ class GenresScreen extends BaseScreen {
           />
         </View>
 
-        <Content>{this.displayGenres()}</Content>
+        {/* <Content>{this.displayGenres()}</Content> */}
       </Container>
     );
   }
@@ -146,14 +137,14 @@ class GenresScreen extends BaseScreen {
       >
         <View
           style={{
-            backgroundColor: this.theme.brandPrimary,
+            backgroundColor: this.theme.tabColor,
             padding: 10,
-            borderRadius: 10,
+            borderRadius: 2,
           }}
         >
           <Text
             style={{
-              color: this.theme.whiteColor,
+              color: this.theme.textColor,
               fontSize: 18,
               fontWeight: "700",
             }}

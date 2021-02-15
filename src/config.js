@@ -14,6 +14,8 @@ export const ENABLE_FB_LOGIN = false;
 export const YEARLYPRODUCT_ID = "";
 export const MONTHLYPRODUCT_ID = "";
 
+export const APP_NAME = "Adibiat";
+
 /**
  * Track access determine what should be done when user don't have access to play track
  * 1 - Can play all tracks with sold track

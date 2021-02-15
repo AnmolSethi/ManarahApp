@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Platform, View, Text, TouchableOpacity, WebView } from "react-native";
+import {
+  Platform,
+  View,
+  Text,
+  TouchableOpacity,
+  WebView,
+  Image,
+} from "react-native";
 import {
   Container,
   Footer,
@@ -13,7 +20,6 @@ import lang from "../utils/lang";
 import { BASE_URL, DEFAULT_LANG, DEFAULT_THEME } from "../config";
 import { StyleProvider } from "native-base";
 import getTheme from "../../native-base-theme/components";
-import light from "../themes/light";
 import dark from "../themes/dark";
 import Player from "./Player";
 import update from "immutability-helper";
@@ -25,7 +31,6 @@ import { trackSchema } from "../store/realmSchema";
 import Util from "./Util";
 import Api from "../api";
 import storage from "../store/storage";
-import GestureRecognizer from "react-native-swipe-gestures";
 
 const Realm = require("realm");
 var RNFS = require("react-native-fs");
@@ -62,15 +67,6 @@ class BaseScreen extends Component {
         : DEFAULT_THEME;
     if (this.props.theme !== undefined && this.props.theme !== null) {
       this.defaultTheme = this.props.theme;
-    }
-
-    switch (this.defaultTheme) {
-      case "light":
-        this.theme = light;
-        break;
-      case "dark":
-        this.theme = dark;
-        break;
     }
 
     if (this.props.setup !== undefined) {
@@ -271,9 +267,12 @@ class BaseScreen extends Component {
           </MaterialDialog>
           <View style={{ flex: 1 }}>{jsx}</View>
           {this.state.player || this.state.player.playing ? (
-            <FastImage
-              source={{ uri: this.player.track.art }}
-              style={{ width: "100%", height: 50, backgroundColor: "red" }}
+            <View
+              style={{
+                width: "100%",
+                height: 50,
+                backgroundColor: this.theme.darkColor,
+              }}
             >
               <TouchableOpacity
                 onPress={() => {
@@ -287,17 +286,21 @@ class BaseScreen extends Component {
               >
                 <View
                   style={{
-                    backgroundColor: "rgba(0,0,0,0.8)",
+                    backgroundColor: this.theme.darkColor,
                     flex: 1,
                     flexDirection: "row",
-                    padding: 5,
+                    justifyContent: "space-between",
+                    padding: 10,
+                    alignContent: "center",
+                    alignItems: "center",
                   }}
                 >
-                  <FastImage
-                    source={{ uri: this.player.track.art }}
-                    style={{ width: 30, height: 30, marginTop: 4 }}
-                  />
-                  <View
+                  <Image
+                    source={require("../images/icons/music_video.png")}
+                    style={{ height: 30, width: 30 }}
+                  ></Image>
+
+                  {/* <View
                     style={{
                       flexDirection: "column",
                       marginLeft: 5,
@@ -321,32 +324,75 @@ class BaseScreen extends Component {
                     >
                       {this.player.track.reposter.full_name}
                     </Text>
+                  </View> */}
+
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-evenly",
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.player.goPrevious();
+                      }}
+                    >
+                      <Image
+                        source={require("../images/icons/previous.png")}
+                        style={{
+                          width: 30,
+                          height: 30,
+                        }}
+                      ></Image>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.validatePlayer();
+                        this.player.togglePlay();
+                      }}
+                    >
+                      <Image
+                        source={
+                          !this.state.isPaused
+                            ? require("../images/icons/Pause.png")
+                            : require("../images/icons/play_filled.png")
+                        }
+                        style={{
+                          width: 25,
+                          height: 25,
+                          marginLeft: 20,
+                          marginRight: 20,
+                        }}
+                      ></Image>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.player.goNext();
+                      }}
+                    >
+                      <Image
+                        source={require("../images/icons/next.png")}
+                        style={{
+                          width: 30,
+                          height: 30,
+                        }}
+                      ></Image>
+                    </TouchableOpacity>
                   </View>
 
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.validatePlayer();
-                      this.player.togglePlay();
+                  <Text
+                    style={{
+                      color: this.theme.textColor,
+                      fontSize: 15,
+                      textAlign: "right",
                     }}
-                    style={{ position: "absolute", right: 10, top: 15 }}
                   >
-                    {!this.state.isPaused ? (
-                      <Icon
-                        name="control-pause"
-                        type="SimpleLineIcons"
-                        style={{ fontSize: 20, color: "#fff" }}
-                      />
-                    ) : (
-                      <Icon
-                        name="control-play"
-                        type="SimpleLineIcons"
-                        style={{ fontSize: 20, color: "#fff" }}
-                      />
-                    )}
-                  </TouchableOpacity>
+                    {this.player.track.title}
+                  </Text>
                 </View>
               </TouchableOpacity>
-            </FastImage>
+            </View>
           ) : null}
           <Footer>
             <FooterTab>
@@ -360,17 +406,10 @@ class BaseScreen extends Component {
                   })
                 }
               >
-                <Icon
-                  style={{
-                    fontSize: 20,
-                    color:
-                      this.activeMenu === "browse"
-                        ? this.theme.brandPrimary
-                        : this.theme.blackColor,
-                  }}
-                  type="SimpleLineIcons"
-                  name="fire"
-                />
+                <Image
+                  source={require("../images/icons/explore.png")}
+                  style={{ width: 20, height: 20, marginBottom: 2 }}
+                ></Image>
                 <Text
                   style={{
                     fontSize: 10,
@@ -395,17 +434,10 @@ class BaseScreen extends Component {
                   })
                 }
               >
-                <Icon
-                  style={{
-                    fontSize: 20,
-                    color:
-                      this.activeMenu === "feed"
-                        ? this.theme.brandPrimary
-                        : this.theme.blackColor,
-                  }}
-                  type="SimpleLineIcons"
-                  name="compass"
-                />
+                <Image
+                  source={require("../images/icons/feed.png")}
+                  style={{ width: 20, height: 20, marginBottom: 2 }}
+                ></Image>
                 <Text
                   style={{
                     fontSize: 10,
@@ -429,17 +461,10 @@ class BaseScreen extends Component {
                   })
                 }
               >
-                <Icon
-                  style={{
-                    fontSize: 20,
-                    color:
-                      this.activeMenu === "artists"
-                        ? this.theme.brandPrimary
-                        : this.theme.blackColor,
-                  }}
-                  type="SimpleLineIcons"
-                  name="people"
-                />
+                <Image
+                  source={require("../images/icons/artist.png")}
+                  style={{ width: 20, height: 20, marginBottom: 2 }}
+                ></Image>
                 <Text
                   style={{
                     fontSize: 10,
@@ -463,17 +488,10 @@ class BaseScreen extends Component {
                   })
                 }
               >
-                <Icon
-                  style={{
-                    fontSize: 20,
-                    color:
-                      this.activeMenu === "genres"
-                        ? this.theme.brandPrimary
-                        : this.theme.blackColor,
-                  }}
-                  type="SimpleLineIcons"
-                  name="social-spotify"
-                />
+                <Image
+                  source={require("../images/icons/genres.png")}
+                  style={{ width: 20, height: 20, marginBottom: 2 }}
+                ></Image>
                 <Text
                   style={{
                     fontSize: 10,
@@ -502,17 +520,10 @@ class BaseScreen extends Component {
                   }
                 }}
               >
-                <Icon
-                  style={{
-                    fontSize: 20,
-                    color:
-                      this.activeMenu === "userProfile"
-                        ? this.theme.brandPrimary
-                        : this.theme.blackColor,
-                  }}
-                  type="SimpleLineIcons"
-                  name="user"
-                />
+                <Image
+                  source={require("../images/icons/library.png")}
+                  style={{ width: 20, height: 20, marginBottom: 2 }}
+                ></Image>
                 <Text
                   style={{
                     fontSize: 10,

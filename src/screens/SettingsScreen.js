@@ -1,22 +1,11 @@
 import React from "react";
 import BaseScreen from "../utils/BaseScreen";
-import { Platform, View, Text, TouchableOpacity } from "react-native";
-import {
-  Container,
-  Icon,
-  Button,
-  Header,
-  Content,
-  Form,
-  Input,
-  Label,
-  Item,
-  Toast,
-} from "native-base";
+import { View, Text, TouchableOpacity } from "react-native";
+import { Container, Content, Form, Input, Item, Toast } from "native-base";
 import lang from "../utils/lang";
 import { connect } from "react-redux";
-import Spinner from "react-native-loading-spinner-overlay";
 import Api from "../api";
+import { Image } from "react-native";
 
 class SettingsScreen extends BaseScreen {
   constructor(props) {
@@ -70,169 +59,224 @@ class SettingsScreen extends BaseScreen {
 
   render() {
     return this.show(
-      <Container
-        style={{ flex: 1, backgroundColor: this.theme.contentVariationBg }}
-      >
-        <Spinner
-          visible={this.state.loading}
-          textContent={""}
-          textStyle={{ color: "#FFF" }}
-        />
-        <Header
-          hasTabs
-          noShadow
-          style={{
-            paddingTop: Platform.OS === "ios" ? 18 : 0,
-            backgroundColor: this.theme.headerBg,
-            height: Platform.OS === "ios" ? 15 : 0,
-          }}
-        ></Header>
+      <Container style={{ backgroundColor: this.theme.contentVariationBg }}>
         <View
           style={{
-            width: "100%",
-            height: 48,
-            backgroundColor: this.theme.greyHeaderBg,
+            height: 50,
+            backgroundColor: this.theme.tabColor,
             padding: 10,
+            paddingLeft: 15,
             flexDirection: "row",
+            alignContent: "stretch",
           }}
         >
-          <TouchableOpacity
-            onPress={() => {
-              this.props.navigation.goBack();
-            }}
-          >
-            <Icon
-              name="arrow-round-back"
-              style={{ color: this.theme.blackColor, fontSize: 30 }}
-            />
-          </TouchableOpacity>
+          <View style={{ flex: 1 }}>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.goBack();
+              }}
+            >
+              <Image
+                source={require("../images/icons/back.png")}
+                style={{ height: 30, width: 30 }}
+              ></Image>
+            </TouchableOpacity>
+          </View>
+
           <Text
             style={{
-              color: this.theme.blackColor,
-              fontSize: 17,
+              flex: 1,
+              color: this.theme.textColor,
+              fontSize: 20,
               marginLeft: 10,
-              marginTop: 3,
+              alignItems: "center",
             }}
           >
             {lang.getString("edit-profile")}
           </Text>
+
+          <View style={{ flex: 1 }}></View>
         </View>
-        <Content>
-          <Form style={{ padding: 20 }}>
-            <Item floatingLabel style={{ marginBottom: 20 }}>
-              <Label style={{ color: this.theme.blackColor }}>
-                {lang.getString("full-name")}
-              </Label>
+
+        <Content
+          style={{
+            backgroundColor: this.theme.darkColor,
+            alignContent: "center",
+          }}
+        >
+          <Form style={{ padding: 10 }}>
+            <Item
+              floatingLabel
+              style={{
+                marginBottom: 10,
+                backgroundColor: this.theme.textFieldColor,
+              }}
+            >
               <Input
-                style={{ color: this.theme.blackColor }}
+                style={{ color: this.theme.textColor }}
+                placeholder={lang.getString("full-name")}
                 value={this.state.name}
                 onChangeText={(t) => this.updateState({ name: t })}
               />
             </Item>
 
-            <Item floatingLabel style={{ marginBottom: 20 }}>
-              <Label style={{ color: this.theme.blackColor }}>
-                {lang.getString("bio")}
-              </Label>
+            <Item
+              floatingLabel
+              style={{
+                marginBottom: 10,
+                backgroundColor: this.theme.textFieldColor,
+              }}
+            >
               <Input
-                style={{ color: this.theme.blackColor }}
+                style={{ color: this.theme.textColor }}
+                placeholder={lang.getString("bio")}
                 value={this.state.bio}
                 onChangeText={(t) => this.updateState({ bio: t })}
               />
             </Item>
 
-            <Item floatingLabel style={{ marginBottom: 20 }}>
-              <Label style={{ color: this.theme.blackColor }}>
-                {lang.getString("city")}
-              </Label>
+            <Item
+              floatingLabel
+              style={{
+                marginBottom: 10,
+                backgroundColor: this.theme.textFieldColor,
+              }}
+            >
               <Input
-                style={{ color: this.theme.blackColor }}
+                style={{ color: this.theme.textColor }}
+                placeholder={lang.getString("city")}
                 value={this.state.city}
                 onChangeText={(t) => this.updateState({ city: t })}
               />
             </Item>
 
-            <Item floatingLabel style={{ marginBottom: 20 }}>
-              <Label style={{ color: this.theme.blackColor }}>
-                {lang.getString("facebook-handle")}
-              </Label>
+            <Item
+              floatingLabel
+              style={{
+                marginBottom: 10,
+                backgroundColor: this.theme.textFieldColor,
+              }}
+            >
               <Input
-                style={{ color: this.theme.blackColor }}
+                style={{ color: this.theme.textColor }}
+                placeholder={lang.getString("facebook-handle")}
                 value={this.state.facebook}
                 onChangeText={(t) => this.updateState({ facebook: t })}
               />
             </Item>
-            <Item floatingLabel style={{ marginBottom: 20 }}>
-              <Label style={{ color: this.theme.blackColor }}>
-                {lang.getString("twitter-handle")}
-              </Label>
+
+            <Item
+              floatingLabel
+              style={{
+                marginBottom: 10,
+                backgroundColor: this.theme.textFieldColor,
+              }}
+            >
               <Input
-                style={{ color: this.theme.blackColor }}
+                style={{ color: this.theme.textColor }}
+                placeholder={lang.getString("twitter-handle")}
                 value={this.state.twitter}
                 onChangeText={(t) => this.updateState({ twitter: t })}
               />
             </Item>
-            <Item floatingLabel style={{ marginBottom: 20 }}>
-              <Label style={{ color: this.theme.blackColor }}>
-                {lang.getString("instagram-handle")}
-              </Label>
+
+            <Item
+              floatingLabel
+              style={{
+                marginBottom: 10,
+                backgroundColor: this.theme.textFieldColor,
+              }}
+            >
               <Input
-                style={{ color: this.theme.blackColor }}
+                style={{ color: this.theme.textColor }}
+                placeholder={lang.getString("instagram-handle")}
                 value={this.state.instagram}
                 onChangeText={(t) => this.updateState({ instagram: t })}
               />
             </Item>
-            <Item floatingLabel style={{ marginBottom: 20 }}>
-              <Label style={{ color: this.theme.blackColor }}>
-                {lang.getString("soundcloud-handle")}
-              </Label>
+
+            <Item
+              floatingLabel
+              style={{
+                marginBottom: 10,
+                backgroundColor: this.theme.textFieldColor,
+              }}
+            >
               <Input
-                style={{ color: this.theme.blackColor }}
+                style={{ color: this.theme.textColor }}
+                placeholder={lang.getString("soundcloud-handle")}
                 value={this.state.soundcloud}
                 onChangeText={(t) => this.updateState({ soundcloud: t })}
               />
             </Item>
-            <Item floatingLabel style={{ marginBottom: 20 }}>
-              <Label style={{ color: this.theme.blackColor }}>
-                {lang.getString("vimeo-handle")}
-              </Label>
+
+            <Item
+              floatingLabel
+              style={{
+                marginBottom: 10,
+                backgroundColor: this.theme.textFieldColor,
+              }}
+            >
               <Input
-                style={{ color: this.theme.blackColor }}
+                style={{ color: this.theme.textColor }}
+                placeholder={lang.getString("vimeo-handle")}
                 value={this.state.vimeo}
                 onChangeText={(t) => this.updateState({ vimeo: t })}
               />
             </Item>
-            <Item floatingLabel style={{ marginBottom: 20 }}>
-              <Label style={{ color: this.theme.blackColor }}>
-                {lang.getString("youtube-handle")}
-              </Label>
+
+            <Item
+              floatingLabel
+              style={{
+                marginBottom: 10,
+                backgroundColor: this.theme.textFieldColor,
+              }}
+            >
               <Input
-                style={{ color: this.theme.blackColor }}
+                style={{ color: this.theme.textColor }}
+                placeholder={lang.getString("youtube-handle")}
                 value={this.state.youtube}
                 onChangeText={(t) => this.updateState({ youtube: t })}
               />
             </Item>
-            <Item floatingLabel style={{ marginBottom: 20 }}>
-              <Label style={{ color: this.theme.blackColor }}>
-                {lang.getString("website")}
-              </Label>
+
+            <Item
+              floatingLabel
+              style={{
+                marginBottom: 10,
+                backgroundColor: this.theme.textFieldColor,
+              }}
+            >
               <Input
-                style={{ color: this.theme.blackColor }}
+                style={{ color: this.theme.textColor }}
+                placeholder={lang.getString("website")}
                 value={this.state.website}
                 onChangeText={(t) => this.updateState({ website: t })}
               />
             </Item>
-            <Button
-              onPress={() => this.save()}
-              primary
-              small
-              style={{ backgroundColor: this.theme.brandPrimary }}
-            >
-              <Text style={{ marginLeft: 10, marginRight: 10, color: "#fff" }}>
-                {" "}
-                {lang.getString("save-settings")}{" "}
-              </Text>
-            </Button>
+
+            <TouchableOpacity onPress={() => this.save()}>
+              <View
+                style={{
+                  width: 300,
+                  alignItems: "center",
+                  marginBottom: 10,
+                  height: 40,
+                  justifyContent: "center",
+                  backgroundColor: "#3F5C57",
+                }}
+              >
+                <Text
+                  style={{
+                    alignSelf: "center",
+                    fontSize: 18,
+                    color: this.theme.textColor,
+                  }}
+                >
+                  {lang.getString("save-settings")}
+                </Text>
+              </View>
+            </TouchableOpacity>
           </Form>
         </Content>
       </Container>

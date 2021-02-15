@@ -1,15 +1,15 @@
 import React from "react";
 import BaseScreen from "../utils/BaseScreen";
-import { View, Text, TouchableOpacity } from "react-native";
-import { Container, Icon, Item, Input, Header } from "native-base";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { Container, Item, Input, Header } from "native-base";
 import lang from "../utils/lang";
 import { connect } from "react-redux";
 import DisplayComponent from "../components/DisplayComponent";
 import PeopleComponent from "../components/PeopleComponent";
 import AlbumComponent from "../components/AlbumComponent";
 import { ScrollView } from "react-native";
-import { Button } from "react-native";
 import { FlatGrid } from "react-native-super-grid";
+import { Image } from "react-native";
 
 class ExploreScreen extends BaseScreen {
   constructor(props) {
@@ -24,23 +24,24 @@ class ExploreScreen extends BaseScreen {
 
   render() {
     return this.show(
-      <Container
-        style={{ flex: 1, backgroundColor: this.theme.contentVariationBg }}
-      >
+      <Container style={{ flex: 1, backgroundColor: this.theme.darkColor }}>
         <Header
           searchBar
           rounded
           hasTabs
           style={{
             paddingBottom: 20,
-            backgroundColor: this.theme.headerBg,
+            backgroundColor: this.theme.tabColor,
             height: 65,
           }}
         >
-          <Item style={{ backgroundColor: "rgba(0,0,0,0.2)", top: 10 }}>
-            <Icon style={{ color: "#E3E3E3" }} name="ios-search" />
+          <Item style={{ backgroundColor: this.theme.darkColor, top: 10 }}>
+            <Image
+              source={require("../images/icons/search.png")}
+              style={{ height: 20, width: 20, marginLeft: 10, marginRight: 20 }}
+            ></Image>
             <Input
-              style={{ color: "#E3E3E3" }}
+              style={{ color: this.theme.textColor }}
               value={this.state.term}
               onChangeText={(t) => {
                 this.updateState({ term: t });
@@ -48,30 +49,18 @@ class ExploreScreen extends BaseScreen {
               }}
               placeholder={lang.getString("search_placeholder")}
             />
-            <Icon
-              style={{ color: "#303A4F" }}
-              name="music-tone"
-              type="SimpleLineIcons"
-            />
           </Item>
         </Header>
 
         <ScrollView>
-          <View style={{ height: 390 }}>
+          <View style={{}}>
             <View
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
               }}
             >
-              <Text
-                style={{
-                  fontSize: 17,
-                  fontWeight: "500",
-                  margin: 10,
-                  color: this.theme.brandPrimary,
-                }}
-              >
+              <Text style={styles.heading_text}>
                 {lang.getString("made-for-you")}
               </Text>
 
@@ -85,22 +74,13 @@ class ExploreScreen extends BaseScreen {
                   });
                 }}
               >
-                <Text
-                  style={{
-                    fontSize: 14,
-                    fontWeight: "500",
-                    margin: 10,
-                    color: this.theme.brandPrimary,
-                  }}
-                >
-                  {"View All"}
-                </Text>
+                <Text style={styles.heading_text}>{"View All"}</Text>
               </TouchableOpacity>
             </View>
             <DisplayComponent
               player={this.player}
               navigation={this.props.navigation}
-              limit={5}
+              limit={3}
               type="global-spotlight"
               typeId=""
               displayType="small-list"
@@ -114,16 +94,7 @@ class ExploreScreen extends BaseScreen {
                 justifyContent: "space-between",
               }}
             >
-              <Text
-                style={{
-                  fontSize: 17,
-                  fontWeight: "500",
-                  margin: 10,
-                  color: this.theme.brandPrimary,
-                }}
-              >
-                {"Top Artists"}
-              </Text>
+              <Text style={styles.heading_text}>{"Top Artists"}</Text>
 
               <TouchableOpacity
                 onPress={() => {
@@ -132,16 +103,7 @@ class ExploreScreen extends BaseScreen {
                   });
                 }}
               >
-                <Text
-                  style={{
-                    fontSize: 14,
-                    fontWeight: "500",
-                    margin: 10,
-                    color: this.theme.brandPrimary,
-                  }}
-                >
-                  {"View All"}
-                </Text>
+                <Text style={styles.heading_text}>{"View All"}</Text>
               </TouchableOpacity>
             </View>
             <PeopleComponent
@@ -154,23 +116,14 @@ class ExploreScreen extends BaseScreen {
               limit={6}
             />
           </View>
-          <View style={{ height: 450 }}>
+          <View>
             <View
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
               }}
             >
-              <Text
-                style={{
-                  fontSize: 17,
-                  fontWeight: "500",
-                  margin: 10,
-                  color: this.theme.brandPrimary,
-                }}
-              >
-                {"Latest Tracks"}
-              </Text>
+              <Text style={styles.heading_text}>{"Latest Tracks"}</Text>
 
               <TouchableOpacity
                 onPress={() => {
@@ -182,46 +135,28 @@ class ExploreScreen extends BaseScreen {
                   });
                 }}
               >
-                <Text
-                  style={{
-                    fontSize: 14,
-                    fontWeight: "500",
-                    margin: 10,
-                    color: this.theme.brandPrimary,
-                  }}
-                >
-                  {"View All"}
-                </Text>
+                <Text style={styles.heading_text}>{"View All"}</Text>
               </TouchableOpacity>
             </View>
 
             <DisplayComponent
               player={this.player}
               navigation={this.props.navigation}
-              limit={6}
+              limit={5}
               type="latest"
               typeId=""
               displayType="small-list"
             />
           </View>
 
-          <View style={{ height: 680 }}>
+          <View>
             <View
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
               }}
             >
-              <Text
-                style={{
-                  fontSize: 17,
-                  fontWeight: "500",
-                  margin: 10,
-                  color: this.theme.brandPrimary,
-                }}
-              >
-                {"Top 50"}
-              </Text>
+              <Text style={styles.heading_text}>{"Top 50"}</Text>
 
               <TouchableOpacity
                 onPress={() => {
@@ -233,23 +168,14 @@ class ExploreScreen extends BaseScreen {
                   });
                 }}
               >
-                <Text
-                  style={{
-                    fontSize: 14,
-                    fontWeight: "500",
-                    margin: 10,
-                    color: this.theme.brandPrimary,
-                  }}
-                >
-                  {"View All"}
-                </Text>
+                <Text style={styles.heading_text}>{"View All"}</Text>
               </TouchableOpacity>
             </View>
 
             <DisplayComponent
               player={this.player}
               navigation={this.props.navigation}
-              limit={10}
+              limit={5}
               type="charts-top"
               typeId="all/this-week"
               offset={0}
@@ -257,23 +183,14 @@ class ExploreScreen extends BaseScreen {
             />
           </View>
 
-          <View style={{ height: 220 }}>
+          <View>
             <View
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
               }}
             >
-              <Text
-                style={{
-                  fontSize: 17,
-                  fontWeight: "500",
-                  margin: 10,
-                  color: this.theme.brandPrimary,
-                }}
-              >
-                {"Playlists"}
-              </Text>
+              <Text style={styles.heading_text}>{"Playlists"}</Text>
 
               <TouchableOpacity
                 onPress={() => {
@@ -282,16 +199,7 @@ class ExploreScreen extends BaseScreen {
                   });
                 }}
               >
-                <Text
-                  style={{
-                    fontSize: 14,
-                    fontWeight: "500",
-                    margin: 10,
-                    color: this.theme.brandPrimary,
-                  }}
-                >
-                  {"View All"}
-                </Text>
+                <Text style={styles.heading_text}>{"View All"}</Text>
               </TouchableOpacity>
             </View>
 
@@ -301,21 +209,13 @@ class ExploreScreen extends BaseScreen {
               player={this.player}
               navigation={this.props.navigation}
               type="playlist"
+              limit={3}
               typeId={"search-" + this.state.term}
             />
           </View>
 
-          <View style={{ height: 300 }}>
-            <Text
-              style={{
-                fontSize: 17,
-                fontWeight: "500",
-                margin: 10,
-                color: this.theme.brandPrimary,
-              }}
-            >
-              {"Trending Tags"}
-            </Text>
+          <View style={{ height: 200 }}>
+            <Text style={styles.heading_text}>{"Trending Tags"}</Text>
             <FlatGrid
               keyExtractor={(item) => item.id}
               items={this.state.tagsList}
@@ -345,22 +245,19 @@ class ExploreScreen extends BaseScreen {
   displayGridItem(item) {
     if (item === false) return null;
     return (
-      <Button
-        title={"#" + item.title}
-        color={this.theme.brandPrimary}
-        style={{
-          color: "white",
-          fontWeight: "700",
-          fontStyle: "italic",
-        }}
+      <TouchableOpacity
         onPress={() =>
           this.props.navigation.navigate("showTags", {
             typeId: item.title,
           })
         }
       >
-        {"#" + item.title}
-      </Button>
+        <View style={{ backgroundColor: this.theme.darkColor }}>
+          <Text style={{ color: this.theme.textColor, textAlign: "left" }}>
+            {"#" + item.title}
+          </Text>
+        </View>
+      </TouchableOpacity>
     );
   }
 
@@ -404,6 +301,15 @@ class ExploreScreen extends BaseScreen {
     }
   }
 }
+
+const styles = StyleSheet.create({
+  heading_text: {
+    fontSize: 16,
+    fontWeight: "normal",
+    margin: 10,
+    color: "#FFD3AE",
+  },
+});
 
 export default connect((state) => {
   return {

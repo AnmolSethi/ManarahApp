@@ -8,8 +8,7 @@ import EmptyComponent from "../utils/EmptyComponent";
 import Api from "../api";
 import FastImage from "react-native-fast-image";
 import { offlineSchema } from "../store/realmSchema";
-import { Container, Header } from "native-base";
-import { Platform } from "react-native";
+import { Container } from "native-base";
 
 class ArtistScreen extends BaseScreen {
   type = "artists";
@@ -115,29 +114,20 @@ class ArtistScreen extends BaseScreen {
 
   render() {
     return this.show(
-      <Container style={{ flex: 1 }}>
-        <Header
-          hasTabs
-          noShadow
-          style={{
-            paddingTop: Platform.OS === "ios" ? 18 : 0,
-            backgroundColor: this.theme.accentColor,
-            height: Platform.OS === "ios" ? 15 : 0,
-          }}
-        ></Header>
+      <Container style={{ flex: 1, backgroundColor: this.theme.darkColor }}>
         <View
           style={{
             justifyContent: "center",
             width: "100%",
             height: 48,
-            backgroundColor: "white",
+            backgroundColor: this.theme.tabColor,
             padding: 10,
             flexDirection: "row",
           }}
         >
           <Text
             style={{
-              color: "black",
+              color: this.theme.textColor,
               fontSize: 17,
               marginLeft: 10,
               marginTop: 3,
@@ -154,8 +144,8 @@ class ArtistScreen extends BaseScreen {
           itemDimension={150}
           spacing={15}
           style={{
-            backgroundColor: this.theme.contentVariationBg,
-            borderRadius: 20,
+            backgroundColor: this.theme.darkColor,
+            height: 200,
           }}
           onEndReachedThreshold={0.5}
           onEndReached={() => {
@@ -165,7 +155,6 @@ class ArtistScreen extends BaseScreen {
             return true;
           }}
           fixed={false}
-          style={{ height: 200 }}
           ListFooterComponent={
             <View style={{ paddingVertical: 20 }}>
               {this.state.fetchFinished ? (
@@ -201,10 +190,16 @@ class ArtistScreen extends BaseScreen {
   }
 
   displayGridItem(item) {
-    console.log(item);
     if (item === false) return null;
+
     return (
-      <View style={{ flex: 1 }}>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: this.theme.darkColor,
+          alignContent: "center",
+        }}
+      >
         <TouchableOpacity
           onPress={() => {
             this.openProfile(item);
@@ -215,7 +210,7 @@ class ArtistScreen extends BaseScreen {
               width: "100%",
               height: 150,
               marginBottom: 10,
-              borderColor: "#D1D1D1",
+              borderColor: this.theme.textColor,
               borderWidth: 1,
               borderRadius: 110,
             }}
@@ -228,7 +223,8 @@ class ArtistScreen extends BaseScreen {
             numberOfLines={1}
             style={{
               fontSize: 15,
-              color: this.theme.blackColor,
+              color: this.theme.textColor,
+              textAlign: "center",
               fontWeight: "500",
             }}
           >

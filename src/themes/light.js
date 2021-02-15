@@ -6,14 +6,20 @@ export default light = {
   tabBarTextColor: "#6b6b6b",
   tabBarTextSize: Platform.OS === "ios" ? 14 : 11,
 
-  brandPrimary: "#ed9520",
+  darkColor: "#13211F",
+  buttonColor: "#3F5C57",
+  textColor: "#FFD3AE",
+  textFieldColor: "#212428",
+  tabColor: "#1F2C2C",
+
+  brandPrimary: "#FFD3AE",
   primaryTransparent: "rgba(250,0,82,0.2)",
   accentColor: "#141821",
   tabBarActiveTextColor: "#ed9520",
   tabActiveBgColor: "#F8F8F8",
   footerTabTextColor: "#141821",
   footerDefaultBg: "#F3F3F3",
-  statusColor: "rgba(0,0,0,0.1)",
+  statusColor: "##13211F",
 
   // Tab
   tabDefaultBg: "#141821",

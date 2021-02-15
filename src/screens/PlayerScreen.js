@@ -1,13 +1,6 @@
 import React from "react";
 import BaseScreen from "../utils/BaseScreen";
-import {
-  Platform,
-  View,
-  Text,
-  TouchableOpacity,
-  Share,
-  ImageBackground,
-} from "react-native";
+import { Platform, View, Text, TouchableOpacity, Share } from "react-native";
 import { Container, Icon, Header, Content, Toast } from "native-base";
 import lang from "../utils/lang";
 import FastImage from "react-native-fast-image";
@@ -19,7 +12,7 @@ import DisplayComponent from "../components/DisplayComponent";
 import update from "immutability-helper";
 import TrackProgressComponent from "../components/TrackProgressComponent";
 import { BASE_CURRENCY, TRACK_PLAY_ACCESS } from "../config";
-import { GestureRecognizer } from "react-native-swipe-gestures";
+import { Image } from "react-native";
 
 class PlayerScreen extends BaseScreen {
   item = null;
@@ -143,7 +136,6 @@ class PlayerScreen extends BaseScreen {
   }
 
   componentDidMount() {
-    //console.log(this.player);
     if (this.needsPrapare) {
       if (
         this.item.canPlay === 1 ||
@@ -162,18 +154,18 @@ class PlayerScreen extends BaseScreen {
   render() {
     this.player.updateComponent(this);
     return this.showContent(
-      <Container style={{ flex: 1 }}>
+      <Container style={{ flex: 1, backgroundColor: this.theme.darkColor }}>
         {this.type !== "radio" ? (
           <Modal
             isVisible={this.state.infoModalVisible}
-            onSwipe={() => this.updateState({ infoModalVisible: false })}
-            swipeDirection="down"
+            // onSwipe={() => this.updateState({ infoModalVisible: false })}
+            // swipeDirection="down"
             style={{ margin: 0 }}
           >
             <View
               style={{
                 flex: 1,
-                backgroundColor: this.theme.contentVariationBg,
+                backgroundColor: this.theme.darkColor,
               }}
             >
               <Header
@@ -186,6 +178,27 @@ class PlayerScreen extends BaseScreen {
                 }}
               ></Header>
 
+              <View
+                style={{
+                  width: "100%",
+                  height: 50,
+                  paddingRight: 25,
+                  backgroundColor: this.theme.darkColor,
+                  padding: 10,
+                  alignContent: "flex-end",
+                  alignItems: "flex-end",
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => this.updateState({ infoModalVisible: false })}
+                >
+                  <Image
+                    source={require("../images/icons/exit.png")}
+                    style={{ height: 30, width: 30 }}
+                  ></Image>
+                </TouchableOpacity>
+              </View>
+
               <Content
                 style={{
                   flex: 1,
@@ -197,15 +210,16 @@ class PlayerScreen extends BaseScreen {
                   source={{ uri: this.item.art_lg }}
                   style={{
                     flex: 1,
-                    width: 220,
-                    height: 220,
-                    marginTop: 40,
+                    width: 150,
+                    height: 150,
+                    margin: 20,
+                    borderRadius: 75,
                     alignSelf: "center",
                   }}
                 />
                 <Text
                   style={{
-                    color: this.theme.blackColor,
+                    color: this.theme.textColor,
                     alignSelf: "center",
                     fontSize: 20,
                     fontWeight: "bold",
@@ -214,17 +228,39 @@ class PlayerScreen extends BaseScreen {
                 >
                   {this.item.title}
                 </Text>
+
                 <Text
                   style={{
-                    color: this.theme.blackColor,
+                    color: "#94A7AF",
+                    fontSize: 14,
+                    fontWeight: "500",
                     alignSelf: "center",
-                    fontSize: 15,
-                    marginTop: 5,
+                    marginTop: 10,
+                    marginBottom: 10,
                     textAlign: "center",
                   }}
                 >
-                  {lang.getString("by")} {this.item.reposter.full_name}
+                  {lang.getString("by") + " " + this.item.user.full_name}
                 </Text>
+
+                <View
+                  style={{
+                    borderColor: this.theme.tabColor,
+                    padding: 2,
+                    borderWidth: 2,
+                    borderRadius: 2,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: this.theme.textColor,
+                      fontSize: 16,
+                      textAlign: "center",
+                    }}
+                  >
+                    {"#" + this.item.tag}
+                  </Text>
+                </View>
 
                 <View
                   style={{
@@ -239,18 +275,18 @@ class PlayerScreen extends BaseScreen {
                       alignSelf: "center",
                       padding: 5,
                       marginLeft: 15,
-                      flexDirection: "row",
+                      flexDirection: "column",
                     }}
                   >
-                    <Icon
-                      name="heart"
-                      type="SimpleLineIcons"
-                      style={{ fontSize: 23, color: this.theme.brandPrimary }}
-                    />
+                    <Image
+                      source={require("../images/icons/Likes.png")}
+                      style={{ height: 30, width: 30 }}
+                    ></Image>
                     <Text
                       style={{
                         color: this.theme.blackColor,
                         marginLeft: 5,
+                        textAlign: "center",
                         marginTop: 5,
                         fontWeight: "bold",
                       }}
@@ -264,51 +300,26 @@ class PlayerScreen extends BaseScreen {
                       alignSelf: "center",
                       padding: 5,
                       marginLeft: 15,
-                      flexDirection: "row",
+                      flexDirection: "column",
                     }}
                   >
-                    <Icon
-                      name="earphones"
-                      type="SimpleLineIcons"
-                      style={{ fontSize: 23, color: this.theme.brandPrimary }}
-                    />
+                    <Image
+                      source={require("../images/icons/earphone.png")}
+                      style={{ height: 30, width: 30 }}
+                    ></Image>
                     <Text
                       style={{
                         color: this.theme.blackColor,
                         marginLeft: 5,
                         marginTop: 5,
                         fontWeight: "bold",
+                        textAlign: "center",
                       }}
                     >
                       {this.item.viewCount}
                     </Text>
                   </View>
-
-                  <View
-                    style={{
-                      alignSelf: "center",
-                      padding: 5,
-                      marginLeft: 15,
-                      flexDirection: "row",
-                    }}
-                  >
-                    <Icon
-                      name="download"
-                      style={{ fontSize: 25, color: this.theme.brandPrimary }}
-                    />
-                    <Text
-                      style={{
-                        color: this.theme.blackColor,
-                        marginLeft: 5,
-                        marginTop: 5,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {this.item.downloadsCount}
-                    </Text>
-                  </View>
                 </View>
-
                 <View
                   style={{
                     flexDirection: "column",
@@ -410,7 +421,7 @@ class PlayerScreen extends BaseScreen {
                   ) : null}
                 </View>
               </Content>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => {
                   this.updateState({ infoModalVisible: false });
                 }}
@@ -420,7 +431,7 @@ class PlayerScreen extends BaseScreen {
                   name="close"
                   style={{ color: this.theme.blackColor, fontSize: 45 }}
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </Modal>
         ) : null}
@@ -502,7 +513,7 @@ class PlayerScreen extends BaseScreen {
           <View
             style={{
               flex: 1,
-              backgroundColor: this.theme.contentVariationBg,
+              backgroundColor: this.theme.darkColor,
             }}
           >
             <Header
@@ -523,34 +534,27 @@ class PlayerScreen extends BaseScreen {
             />
           </View>
         </Modal>
-
-        <ImageBackground
-          blurRadius={1}
-          source={{ uri: "http://manarahapp.com/uploads/TestImage.jpeg" }}
-          style={{ flex: 1, width: "100%", height: "100%" }}
+        <View
+          style={{
+            backgroundColor: this.theme.tabColor,
+            flex: 1,
+            paddingTop: 15,
+            flexDirection: "row",
+            alignContent: "center",
+          }}
         >
-          <View
-            style={{
-              backgroundColor: "rgba(0,0,0,0.8)",
-              flex: 1,
-              paddingTop: 15,
-              flexDirection: "row",
-              alignContent: "center",
+          <TouchableOpacity
+            onPress={() => {
+              this.minimize();
             }}
+            style={{ position: "absolute", left: 20, top: 15 }}
           >
-            <TouchableOpacity
-              onPress={() => {
-                this.minimize();
-              }}
-              style={{ position: "absolute", left: 20, top: 15 }}
-            >
-              <Icon
-                name="arrow-down"
-                type="SimpleLineIcons"
-                style={{ color: "#fff", fontSize: 25 }}
-              />
-            </TouchableOpacity>
-            {/* {this.type !== "radio" ? (
+            <Image
+              source={require("../images/icons/arrow_down.png")}
+              style={{ height: 25, width: 25 }}
+            ></Image>
+          </TouchableOpacity>
+          {/* {this.type !== "radio" ? (
               <TouchableOpacity
                 onPress={() => {
                   this.updateState({ infoModalVisible: true });
@@ -565,7 +569,7 @@ class PlayerScreen extends BaseScreen {
               </TouchableOpacity>
             ) : null} */}
 
-            {/* {this.type !== "radio" ? (
+          {/* {this.type !== "radio" ? (
               <TouchableOpacity
                 onPress={() => {
                   this.updateState({ nextupModalVisible: true });
@@ -580,260 +584,222 @@ class PlayerScreen extends BaseScreen {
               </TouchableOpacity>
             ) : null} */}
 
-            {this.type !== "radio" && this.item.price > 0 ? (
-              <TouchableOpacity
-                onPress={() => {
-                  this.showPaymentModal("track", this.item.id, this.item.price);
+          {this.type !== "radio" && this.item.price > 0 ? (
+            <TouchableOpacity
+              onPress={() => {
+                this.showPaymentModal("track", this.item.id, this.item.price);
+              }}
+              style={{ position: "absolute", left: 50, top: 35 }}
+            >
+              <View
+                style={{
+                  padding: 4,
+                  borderRadius: 10,
+                  backgroundColor: this.theme.brandPrimary,
                 }}
-                style={{ position: "absolute", left: 50, top: 35 }}
               >
-                <View
-                  style={{
-                    padding: 4,
-                    borderRadius: 10,
-                    backgroundColor: this.theme.brandPrimary,
-                  }}
-                >
-                  <Text style={{ color: "#fff" }}>
-                    {BASE_CURRENCY}
-                    {this.item.price}
-                  </Text>
-                </View>
-              </TouchableOpacity>
+                <Text style={{ color: "#fff" }}>
+                  {BASE_CURRENCY}
+                  {this.item.price}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ) : null}
+
+          <View
+            style={{
+              position: "absolute",
+              top: 40,
+              alignSelf: "center",
+              alignContent: "center",
+              padding: 20,
+              flexDirection: "column",
+              flex: 1,
+            }}
+          >
+            {/* Title Text */}
+            <Text
+              style={{
+                color: this.theme.textColor,
+                alignSelf: "center",
+                fontSize: 20,
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
+            >
+              {this.item.title}
+            </Text>
+            {/* Progress Bar */}
+            {this.type !== "radio" ? (
+              <View
+                style={{
+                  padding: 10,
+                  marginTop: 40,
+                  height: 100,
+                  alignContent: "center",
+                  marginBottom: 0,
+                  alignSelf: "center",
+                }}
+              >
+                <TrackProgressComponent
+                  key={this.player.track.id}
+                  track={this.player.track}
+                  player={this.player}
+                />
+              </View>
             ) : null}
 
             <View
               style={{
-                alignSelf: "center",
-                alignContent: "center",
                 padding: 20,
-                flexDirection: "column",
-                flex: 1,
+                marginTop: 20,
+                flexDirection: "row",
+                justifyContent: "space-evenly",
               }}
             >
-              <FastImage
-                blurRadius={2}
-                source={{ uri: this.item.art_lg }}
+              <Image
+                source={require("../images/icons/previous.png")}
                 style={{
-                  width: 150,
-                  height: 150,
-                  alignSelf: "center",
-                  borderRadius: 10,
-                  marginBottom: 10,
-                  marginTop: 20,
+                  width: 30,
+                  height: 30,
                 }}
-              />
-              <Text
-                numberOfLines={1}
-                style={{
-                  color: "#fff",
-                  alignSelf: "center",
-                  fontSize: 20,
-                  fontWeight: "bold",
-                  textAlign: "center",
+              ></Image>
+              <TouchableOpacity
+                onPress={() => {
+                  if (this.type === "radio") return true;
+                  this.player.goPrevious();
                 }}
               >
-                {this.item.title}
-              </Text>
-              <Text
-                style={{
-                  color: "#fff",
-                  alignSelf: "center",
-                  fontSize: 15,
-                  marginTop: 5,
-                  textAlign: "center",
-                }}
-              >
-                {lang.getString("by")} {this.item.reposter.full_name}
-              </Text>
-
-              <View
-                style={{
-                  alignContent: "center",
-                  flexDirection: "row",
-                  alignSelf: "center",
-                  marginTop: 15,
-                }}
-              >
-                {this.type !== "radio" ? (
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.addToPlaylist(this.item.id);
-                    }}
-                    style={{ alignSelf: "center", padding: 5 }}
-                  >
-                    <Icon
-                      name="plus"
-                      type="SimpleLineIcons"
-                      style={{ fontSize: 30, color: "#fff" }}
-                    />
-                  </TouchableOpacity>
-                ) : null}
-                <TouchableOpacity
-                  onPress={() => {
-                    this.like();
-                  }}
-                  style={{ alignSelf: "center", padding: 5, marginLeft: 15 }}
-                >
-                  <Icon
-                    name="heart"
-                    type="SimpleLineIcons"
-                    style={{
-                      fontSize: 30,
-                      color:
-                        this.state.item.hasLiked === 1
-                          ? this.theme.brandPrimary
-                          : "#fff",
-                    }}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    let message = lang.getString("share-track-message");
-                    if (Platform.OS !== "ios") message += " " + this.item.link;
-                    Share.share(
-                      {
-                        message: message,
-                        url: this.item.link,
-                        title: lang.getString("share-track"),
-                      },
-                      {
-                        // Android only:
-                        dialogTitle: lang.getString("share-track"),
-                      }
-                    );
-                  }}
-                  style={{ alignSelf: "center", padding: 5, marginLeft: 15 }}
-                >
-                  <Icon
-                    name="share"
-                    type="SimpleLineIcons"
-                    style={{ fontSize: 30, color: "#fff" }}
-                  />
-                </TouchableOpacity>
-
-                {this.type !== "radio" ? (
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.updateState({ infoModalVisible: true });
-                    }}
-                    style={{
-                      alignSelf: "center",
-                      padding: 5,
-                      marginLeft: 15,
-                    }}
-                  >
-                    <Icon
-                      name="info"
-                      type="SimpleLineIcons"
-                      style={{ fontSize: 30, color: "#fff" }}
-                    />
-                  </TouchableOpacity>
-                ) : null}
-              </View>
-
-              {this.type !== "radio" ? (
-                <View style={{ padding: 10, marginTop: 40, marginBottom: 0 }}>
-                  <TrackProgressComponent
-                    key={this.player.track.id}
-                    track={this.player.track}
-                    player={this.player}
-                  />
-                </View>
-              ) : null}
-
-              <View
-                style={{
-                  alignContent: "center",
-                  flexDirection: "row",
-                  alignSelf: "center",
-                }}
-              >
-                <TouchableOpacity
-                  onPress={() => {
-                    if (this.type === "radio") return true;
-                    this.player.goPrevious();
-                  }}
-                  style={{ alignSelf: "center", padding: 5 }}
-                >
-                  <Icon
-                    name="control-rewind"
-                    type="SimpleLineIcons"
-                    style={{ fontSize: 23, color: "#fff" }}
-                  />
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => {
-                    this.validatePlayer();
-                    this.player.togglePlay();
-                  }}
+                <Image
+                  source={require("../images/icons/fast_backward.png")}
                   style={{
-                    alignSelf: "center",
-                    backgroundColor: this.theme.brandPrimary,
-                    padding: 5,
-                    marginLeft: 15,
-                    width: 60,
-                    height: 60,
-                    borderRadius: 100,
+                    width: 30,
+                    height: 30,
                   }}
-                >
-                  {!this.state.isPaused ? (
-                    <Icon
-                      name="control-pause"
-                      type="SimpleLineIcons"
-                      style={{
-                        fontSize: 20,
-                        color: "#fff",
-                        position: "absolute",
-                        top: 18,
-                        left: 20,
-                      }}
-                    />
-                  ) : (
-                    <Icon
-                      name="control-play"
-                      type="SimpleLineIcons"
-                      style={{
-                        fontSize: 20,
-                        color: "#fff",
-                        position: "absolute",
-                        top: 18,
-                        left: 20,
-                      }}
-                    />
-                  )}
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    if (this.type === "radio") return true;
-                    this.player.goNext();
+                ></Image>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  this.validatePlayer();
+                  this.player.togglePlay();
+                }}
+              >
+                <Image
+                  source={
+                    !this.state.isPaused
+                      ? require("../images/icons/Pause.png")
+                      : require("../images/icons/play_filled.png")
+                  }
+                  style={{
+                    width: 30,
+                    height: 30,
                   }}
-                  style={{ alignSelf: "center", padding: 5, marginLeft: 20 }}
-                >
-                  <Icon
-                    name="control-forward"
-                    type="SimpleLineIcons"
-                    style={{ fontSize: 23, color: "#fff" }}
-                  />
-                </TouchableOpacity>
-              </View>
+                ></Image>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  if (this.type === "radio") return true;
+                  this.player.goNext();
+                }}
+              >
+                <Image
+                  source={require("../images/icons/fast_forward.png")}
+                  style={{
+                    width: 30,
+                    height: 30,
+                  }}
+                ></Image>
+              </TouchableOpacity>
+              <Image
+                source={require("../images/icons/next.png")}
+                style={{
+                  width: 30,
+                  height: 30,
+                }}
+              ></Image>
             </View>
-            {/* 
-            <TouchableOpacity
-              onPress={() => {
-                this.minimize();
+
+            {/* Bottom Icons */}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-evenly",
+                marginTop: 15,
               }}
-              style={{ position: "absolute", right: "47%", bottom: 10 }}
             >
-              <Icon
-                name="arrow-down"
-                type="SimpleLineIcons"
-                style={{ color: "#fff", fontSize: 25 }}
-              />
-            </TouchableOpacity> */}
+              {/* Like */}
+              <TouchableOpacity
+                onPress={() => {
+                  this.like();
+                }}
+              >
+                <Image
+                  source={
+                    this.item.hasLiked === 1
+                      ? require("../images/icons/liked.png")
+                      : require("../images/icons/Likes.png")
+                  }
+                  style={{ height: 30, width: 30, marginRight: 10 }}
+                ></Image>
+              </TouchableOpacity>
+              {/* Share */}
+              <TouchableOpacity
+                onPress={() => {
+                  let message = lang.getString("share-track-message");
+                  if (Platform.OS !== "ios") message += " " + this.item.link;
+                  Share.share(
+                    {
+                      message: message,
+                      url: this.item.link,
+                      title: lang.getString("share-track"),
+                    },
+                    {
+                      dialogTitle: lang.getString("share-track"),
+                    }
+                  );
+                }}
+              >
+                <Image
+                  source={require("../images/icons/Share.png")}
+                  style={{ height: 30, width: 30, marginRight: 10 }}
+                ></Image>
+              </TouchableOpacity>
+              {/* Playlist */}
+              <TouchableOpacity
+                onPress={() => {
+                  this.addToPlaylist(this.item.id);
+                }}
+              >
+                <Image
+                  source={require("../images/icons/Add.png")}
+                  style={{ height: 30, width: 30, marginRight: 10 }}
+                ></Image>
+              </TouchableOpacity>
+              {/* Listen Later */}
+              <Image
+                source={require("../images/icons/listen_later.png")}
+                style={{ height: 30, width: 30, marginRight: 10 }}
+              ></Image>
+              {/* Report */}
+              <Image
+                source={require("../images/icons/Report.png")}
+                style={{ height: 30, width: 30, marginRight: 10 }}
+              ></Image>
+              {/* Info */}
+              <TouchableOpacity
+                onPress={() => {
+                  this.updateState({ infoModalVisible: true });
+                }}
+              >
+                <Image
+                  source={require("../images/icons/info.png")}
+                  style={{ height: 30, width: 30, marginRight: 10 }}
+                ></Image>
+              </TouchableOpacity>
+            </View>
           </View>
-        </ImageBackground>
+        </View>
       </Container>
     );
   }
@@ -893,8 +859,6 @@ class PlayerScreen extends BaseScreen {
     });
   }
 }
-
-const image = require("../images/bg.jpeg");
 
 export default connect((state) => {
   return {

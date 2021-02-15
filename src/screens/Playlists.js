@@ -16,7 +16,7 @@ class Playlists extends BaseScreen {
 
   render() {
     return this.show(
-      <Container style={{ flex: 1 }}>
+      <Container style={{ flex: 1, backgroundColor: this.theme.darkColor }}>
         <Header
           hasTabs
           noShadow
@@ -31,7 +31,7 @@ class Playlists extends BaseScreen {
             justifyContent: "center",
             width: "100%",
             height: 48,
-            backgroundColor: this.theme.accentColor,
+            backgroundColor: this.theme.tabColor,
             padding: 10,
             flexDirection: "row",
             marginBottom: 20,
@@ -39,7 +39,7 @@ class Playlists extends BaseScreen {
         >
           <Text
             style={{
-              color: "#fff",
+              color: this.theme.textColor,
               fontSize: 17,
               marginLeft: 10,
               marginTop: 3,

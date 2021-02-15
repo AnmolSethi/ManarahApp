@@ -79,7 +79,6 @@ class PeopleComponent extends BaseScreen {
       limit: this.limit,
     })
       .then((result) => {
-        console.log(result);
         let lists = [];
         if (paginate) {
           //more
@@ -174,7 +173,7 @@ class PeopleComponent extends BaseScreen {
   displayGridItem(item) {
     if (item === false) return null;
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, alignContent: "center" }}>
         <TouchableOpacity
           onPress={() => {
             this.openProfile(item);
@@ -204,7 +203,7 @@ class PeopleComponent extends BaseScreen {
             numberOfLines={1}
             style={{
               fontSize: 15,
-              color: this.theme.blackColor,
+              color: this.theme.textColor,
               fontWeight: "500",
             }}
           >

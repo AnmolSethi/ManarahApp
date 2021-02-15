@@ -1,15 +1,18 @@
 import React from "react";
 import BaseScreen from "../utils/BaseScreen";
 import { View, TouchableOpacity, ActivityIndicator } from "react-native";
-import { Text } from "native-base";
+import { Text, Toast } from "native-base";
 import lang from "../utils/lang";
 import { connect } from "react-redux";
 import EmptyComponent from "../utils/EmptyComponent";
 import Api from "../api";
-import { BASE_CURRENCY } from "../config";
 import FastImage from "react-native-fast-image";
+import update from "immutability-helper";
 import { offlineSchema } from "../store/realmSchema";
 import { FlatList } from "react-native-gesture-handler";
+import { Image } from "react-native";
+import { Platform } from "react-native";
+import { Share } from "react-native";
 
 class AlbumComponent extends BaseScreen {
   type = "";
@@ -100,7 +103,7 @@ class AlbumComponent extends BaseScreen {
         this.updateState({
           itemLists: lists,
           fetchFinished: true,
-          itemListNotEnd: result.length < 1 ? true : false,
+          itemListNotEnd: result.length > 1 ? true : false,
         });
       })
       .catch(() => {
@@ -135,7 +138,7 @@ class AlbumComponent extends BaseScreen {
             : null
         }
         ListFooterComponent={
-          <View style={{ paddingVertical: 20 }}>
+          <View>
             {this.state.fetchFinished ? (
               <Text />
             ) : (
@@ -151,165 +154,137 @@ class AlbumComponent extends BaseScreen {
           )
         }
         renderItem={({ item, index }) => {
-          return this.displaySmallListItem(item, index);
+          return this.displaySmallListItem1(item);
         }}
       />
-
-      // <FlatGrid
-      //   keyExtractor={(item) => item.id}
-      //   items={this.state.itemLists}
-      //   extraData={this.state}
-      //   scrollEnabled={true}
-      //   itemDimension={100}
-      //   spacing={15}
-      //   style={{ backgroundColor: this.theme.contentVariationBg }}
-      //   onEndReachedThreshold={0.5}
-      //   onEndReached={() => {
-      //     if (this.state.itemLists.length > 0 && !this.state.itemListNotEnd) {
-      //       this.loadLists(true);
-      //     }
-      //     return true;
-      //   }}
-      //   fixed={false}
-      //   style={{ height: 200 }}
-      //   ListFooterComponent={
-      //     <View style={{ paddingVertical: 20 }}>
-      //       {this.state.fetchFinished ? (
-      //         <Text />
-      //       ) : (
-      //         <View
-      //           style={{
-      //             justifyContent: "center",
-      //             alignContent: "center",
-      //             width: "100%",
-      //             alignItems: "center",
-      //           }}
-      //         >
-      //           <ActivityIndicator
-      //             style={{ alignSelf: "center" }}
-      //             size="large"
-      //           />
-      //         </View>
-      //       )}
-      //     </View>
-      //   }
-      //   ListEmptyComponent={
-      //     !this.state.fetchFinished ? (
-      //       <Text />
-      //     ) : (
-      //       <EmptyComponent text={lang.getString("no_playlists_found")} />
-      //     )
-      //   }
-      //   renderItem={({ item, index }) => this.displayGridItem(item)}
-      // />
     );
   }
 
-  displaySmallListItem(item, index) {
-    if (item === false) return null;
-
+  displaySmallListItem1(item) {
     return (
-      <TouchableOpacity
-        onPress={() => {
-          this.openPlaylist(item);
+      <View
+        style={{
+          backgroundColor: this.theme.tabColor,
+          margin: 10,
+          borderRadius: 8,
         }}
       >
-        <View style={{ flex: 1, flexDirection: "row", padding: 10 }}>
-          <FastImage
-            style={{ width: 40, height: 40, marginTop: 4 }}
-            source={{
-              uri: item.art,
-            }}
-            resizeMode={FastImage.resizeMode.cover}
-          />
-          <View style={{ flex: 1, marginLeft: 10, flexDirection: "column" }}>
-            <Text
-              style={{
-                color: this.theme.blackColor,
-                fontSize: 14,
-                fontWeight: "500",
+        <TouchableOpacity
+          onPress={() => {
+            this.openPlaylist(item);
+          }}
+        >
+          <View style={{ flex: 1, flexDirection: "row", padding: 10 }}>
+            <TouchableOpacity
+              onPress={() => {
+                this.openProfile(item.user);
               }}
             >
-              {item.name}
-            </Text>
-            <Text
-              style={{
-                color: this.theme.greyColor,
-                fontSize: 13,
-                marginTop: 5,
-              }}
-            >
-              {item.user.full_name}
-            </Text>
+              <FastImage
+                style={{
+                  width: 70,
+                  height: 70,
+                  marginTop: 4,
+                  borderRadius: 35,
+                }}
+                source={{
+                  uri: item.art,
+                }}
+                resizeMode={FastImage.resizeMode.cover}
+              />
+            </TouchableOpacity>
+
+            <View style={{ flex: 1, marginLeft: 10, flexDirection: "row" }}>
+              <View
+                style={{ flex: 1, marginLeft: 10, flexDirection: "column" }}
+              >
+                <Text
+                  style={{
+                    color: "#94A7AF",
+                    fontSize: 14,
+                    fontWeight: "500",
+                  }}
+                >
+                  {item.user.username}
+                </Text>
+                <Text
+                  style={{
+                    color: this.theme.textColor,
+                    fontSize: 16,
+                    textAlign: "left",
+                    marginTop: 6,
+                    marginBottom: 6,
+                  }}
+                >
+                  {item.name}
+                </Text>
+                <View style={{ flexDirection: "row" }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      item.hasLiked = item.hasLiked === 1 ? 0 : 1;
+                      if (item.hasLiked === 1) {
+                        Toast.show({
+                          text: lang.getString("you-love-this"),
+                          textStyle: {
+                            color: this.theme.brandPrimary,
+                            textAlign: "center",
+                          },
+                        });
+                      }
+                      this.updateState(
+                        update(this.state, {
+                          item: { $set: item },
+                        })
+                      );
+
+                      Api.get("like/item", {
+                        userid: this.props.userid,
+                        key: this.props.apikey,
+                        type: "playlist",
+                        type_id: item.id,
+                      });
+                    }}
+                  >
+                    <Image
+                      source={require("../images/icons/Likes.png")}
+                      style={{ height: 20, width: 20, marginRight: 5 }}
+                    ></Image>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      let message = lang.getString("share-playlist");
+                      if (Platform.OS !== "ios") message += " " + item.link;
+                      Share.share(
+                        {
+                          message: message,
+                          url: this.item.link,
+                          title: lang.getString("share-playlist"),
+                        },
+                        {
+                          dialogTitle: lang.getString("share-playlist"),
+                        }
+                      );
+                    }}
+                  >
+                    <Image
+                      source={require("../images/icons/Share.png")}
+                      style={{ height: 20, width: 20, marginRight: 5 }}
+                    ></Image>
+                  </TouchableOpacity>
+
+                  <Image
+                    source={require("../images/icons/go_to_track.png")}
+                    style={{ height: 20, width: 20, marginRight: 5 }}
+                  ></Image>
+                </View>
+              </View>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
     );
   }
-
-  // displayGridItem(item) {
-  //   if (item === false) return null;
-  //   return (
-  //     <View style={{ flex: 1 }}>
-  //       <TouchableOpacity
-  //         onPress={() => {
-  //           this.openPlaylist(item);
-  //         }}
-  //       >
-  //         <FastImage
-  //           style={{
-  //             width: "100%",
-  //             height: 130,
-  //             marginBottom: 10,
-  //             borderColor: "#D1D1D1",
-  //             borderWidth: 1,
-  //           }}
-  //           source={{
-  //             uri: item.art,
-  //           }}
-  //           resizeMode={FastImage.resizeMode.cover}
-  //         >
-  //           {this.props.setup.enable_store && item.price > 0 ? (
-  //             <View
-  //               style={{
-  //                 backgroundColor: this.theme.brandPrimary,
-  //                 padding: 5,
-  //                 borderRadius: 100,
-  //                 width: 80,
-  //                 margin: 7,
-  //                 alignContent: "center",
-  //               }}
-  //             >
-  //               <Text
-  //                 numberOfLines={1}
-  //                 style={{ color: "#fff", alignSelf: "center" }}
-  //               >
-  //                 {BASE_CURRENCY}
-  //                 {item.price}
-  //               </Text>
-  //             </View>
-  //           ) : null}
-  //         </FastImage>
-  //       </TouchableOpacity>
-  //       <TouchableOpacity
-  //         onPress={() => {
-  //           this.openPlaylist(item);
-  //         }}
-  //       >
-  //         <Text
-  //           numberOfLines={1}
-  //           style={{
-  //             fontSize: 15,
-  //             color: this.theme.blackColor,
-  //             fontWeight: "500",
-  //           }}
-  //         >
-  //           {item.name}
-  //         </Text>
-  //       </TouchableOpacity>
-  //     </View>
-  //   );
-  // }
 }
 
 export default connect((state) => {

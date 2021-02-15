@@ -1,17 +1,13 @@
 import React from "react";
 import BaseScreen from "../utils/BaseScreen";
-import { View, TouchableOpacity, ActivityIndicator } from "react-native";
-import { Icon, Text } from "native-base";
-import lang from "../utils/lang";
+import { View, TouchableOpacity } from "react-native";
+import { Text } from "native-base";
 import { connect } from "react-redux";
-import { FlatGrid } from "react-native-super-grid";
-import EmptyComponent from "../utils/EmptyComponent";
 import Api from "../api";
-import FastImage from "react-native-fast-image";
-import { BASE_CURRENCY } from "../config";
 import { Container, Header } from "native-base";
 import { Platform } from "react-native";
 import DisplayComponent from "../components/DisplayComponent";
+import { Image } from "react-native";
 
 class ShowTagsScreen extends BaseScreen {
   typeId = "";
@@ -60,7 +56,7 @@ class ShowTagsScreen extends BaseScreen {
 
   render() {
     return (
-      <Container style={{ flex: 1 }}>
+      <Container style={{ flex: 1, backgroundColor: this.theme.darkColor }}>
         <Header
           hasTabs
           noShadow
@@ -74,7 +70,7 @@ class ShowTagsScreen extends BaseScreen {
         <View
           style={{
             height: 50,
-            backgroundColor: this.theme.headerBg,
+            backgroundColor: this.theme.tabColor,
             padding: 10,
             paddingLeft: 15,
             flexDirection: "row",
@@ -87,17 +83,17 @@ class ShowTagsScreen extends BaseScreen {
                 this.props.navigation.goBack();
               }}
             >
-              <Icon
-                name="arrow-round-back"
-                style={{ color: this.theme.blackColor, fontSize: 30 }}
-              />
+              <Image
+                source={require("../images/icons/back.png")}
+                style={{ height: 30, width: 30 }}
+              ></Image>
             </TouchableOpacity>
           </View>
 
           <Text
             style={{
               flex: 1,
-              color: this.theme.blackColor,
+              color: this.theme.textColor,
               fontSize: 20,
               marginLeft: 10,
               alignItems: "center",
