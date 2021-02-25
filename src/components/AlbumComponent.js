@@ -36,6 +36,9 @@ class AlbumComponent extends BaseScreen {
         : "playlist";
     this.component = this.props.component;
     this.noCache = this.props.noCache === undefined ? false : true;
+  }
+
+  componentDidMount() {
     this.loadLists(false);
   }
 
@@ -78,7 +81,6 @@ class AlbumComponent extends BaseScreen {
       .then((result) => {
         let lists = [];
         if (paginate) {
-          //more
           lists.push(...this.state.itemLists);
           lists.push(...result);
         } else {
@@ -95,7 +97,6 @@ class AlbumComponent extends BaseScreen {
                     true
                   );
                 });
-                //realm.close();
               }
             );
           }
@@ -114,10 +115,9 @@ class AlbumComponent extends BaseScreen {
   render() {
     return (
       <FlatList
-        keyExtractor={(item) => item.id}
+        data={this.state.itemLists}
         data={this.state.itemLists}
         style={{ flex: 1 }}
-        ref="_flatList"
         onEndReachedThreshold={0.5}
         onEndReached={() => {
           if (this.state.itemLists.length > 0 && !this.state.itemListNotEnd) {

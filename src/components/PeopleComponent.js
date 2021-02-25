@@ -36,7 +36,9 @@ class PeopleComponent extends BaseScreen {
       this.props.cacheFilter !== undefined ? this.props.cacheFilter : "";
     this.component = this.props.component;
     this.noCache = this.props.noCache === undefined ? false : true;
+  }
 
+  componentDidMount() {
     this.loadLists(false);
   }
 
@@ -117,7 +119,7 @@ class PeopleComponent extends BaseScreen {
   render() {
     return (
       <FlatGrid
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item, index) => item[index].full_name}
         items={this.state.itemLists}
         extraData={this.state}
         itemDimension={100}

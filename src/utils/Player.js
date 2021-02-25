@@ -104,7 +104,6 @@ export default class Player {
           if (tracks.length > 0) {
             let track = tracks[0];
             url = "file:///" + track.file;
-            //console.log("localfile -" + url);
           }
 
           var track = {
@@ -117,10 +116,8 @@ export default class Player {
             date: "2014-05-20T07:00:00+00:00", // RFC 3339
             artwork: this.track.art, // Load artwork from the network
           };
-          //console.log(url);
+
           TrackPlayer.add([track]).then(() => {
-            // The tracks were adde
-            //this.actualPlaying = true;
             try {
               TrackPlayer.play();
             } catch (e) {
@@ -140,15 +137,11 @@ export default class Player {
 
   togglePlay() {
     if (this.component.state.isPaused) {
-      //this.service.togglePlayPause();
-      //console.log('Play initiated');
       TrackPlayer.play();
       this.playing = true;
       this.isPaused = false;
       this.component.updateState({ isPaused: !this.component.state.isPaused });
     } else {
-      // this.service.togglePlayPause();
-      //console.log('Paused initiated');
       TrackPlayer.pause();
       this.playing = true;
       this.isPaused = true;
@@ -176,8 +169,6 @@ export default class Player {
 
   stopPlaying() {
     try {
-      //console.log('trackStart1');
-      //this.actualPlaying = true;
       this.component.updateState({ isPaused: false, playing: false });
       //this.service.stop();
       this.playing = false;
@@ -233,6 +224,7 @@ export default class Player {
 
   goNext() {
     console.log("next event occurred");
+
     this.currentPlayIndex = this.currentPlayIndex + 1;
     //console.log(this.currentPlayList);
     let result = this.currentPlayList[this.currentPlayIndex];
@@ -283,19 +275,6 @@ export default class Player {
       this.currentPlayIndex = this.currentPlayIndex + 1;
     }
     return false;
-    /**Api.get('navigate/player', {
-            userid : this.component.props.userid,
-            key : this.component.props.apikey,
-            id : this.track.id,
-            type : this.type,
-            type_id : this.typeId,
-            nav_type : 'previous'
-        }).then((result) => {
-            if (result.id === 0) return this.stopPlaying();
-            this.validateNewTrack(result);
-        }).catch((e) => {
-            this.stopPlaying();
-        })**/
   }
 
   validateNewTrack(result) {

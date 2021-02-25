@@ -1,8 +1,16 @@
 import React from "react";
 import BaseScreen from "../utils/BaseScreen";
-import { Platform, View, Text, TouchableOpacity, Share } from "react-native";
+import {
+  Platform,
+  View,
+  Text,
+  TouchableOpacity,
+  Share,
+  WebView,
+} from "react-native";
 import { Container, Icon, Header, Content, Toast } from "native-base";
 import lang from "../utils/lang";
+import Video from "react-native-video";
 import FastImage from "react-native-fast-image";
 import { connect } from "react-redux";
 import Modal from "react-native-modal";
@@ -97,7 +105,6 @@ class PlayerScreen extends BaseScreen {
     this.player.setTrack(this.item, this.type, this.typeId);
     this.player.stopPlaying();
     this.player.actualPlaying = false;
-    //console.log(item);
     if (
       this.needsPrapare &&
       (this.item.canPlay === 1 ||
@@ -158,8 +165,8 @@ class PlayerScreen extends BaseScreen {
         {this.type !== "radio" ? (
           <Modal
             isVisible={this.state.infoModalVisible}
-            // onSwipe={() => this.updateState({ infoModalVisible: false })}
-            // swipeDirection="down"
+            onSwipe={() => this.updateState({ infoModalVisible: false })}
+            swipeDirection="down"
             style={{ margin: 0 }}
           >
             <View
@@ -584,32 +591,11 @@ class PlayerScreen extends BaseScreen {
               </TouchableOpacity>
             ) : null} */}
 
-          {this.type !== "radio" && this.item.price > 0 ? (
-            <TouchableOpacity
-              onPress={() => {
-                this.showPaymentModal("track", this.item.id, this.item.price);
-              }}
-              style={{ position: "absolute", left: 50, top: 35 }}
-            >
-              <View
-                style={{
-                  padding: 4,
-                  borderRadius: 10,
-                  backgroundColor: this.theme.brandPrimary,
-                }}
-              >
-                <Text style={{ color: "#fff" }}>
-                  {BASE_CURRENCY}
-                  {this.item.price}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ) : null}
-
           <View
             style={{
               position: "absolute",
               top: 40,
+              width: "100%",
               alignSelf: "center",
               alignContent: "center",
               padding: 20,
@@ -625,12 +611,13 @@ class PlayerScreen extends BaseScreen {
                 fontSize: 20,
                 fontWeight: "bold",
                 textAlign: "center",
+                marginBottom: 20,
               }}
             >
               {this.item.title}
             </Text>
             {/* Progress Bar */}
-            {this.type !== "radio" ? (
+            {this.item.track_type === "1" ? (
               <View
                 style={{
                   padding: 10,
@@ -647,7 +634,19 @@ class PlayerScreen extends BaseScreen {
                   player={this.player}
                 />
               </View>
-            ) : null}
+            ) : (
+              <Video
+                paused={this.state.isPaused}
+                source={{ uri: this.item.streamurl }}
+                style={{
+                  width: "100%",
+                  height: 200,
+                  backgroundColor: "#000",
+                  borderRadius: 10,
+                }}
+                resizeMode="cover"
+              ></Video>
+            )}
 
             <View
               style={{
@@ -805,7 +804,8 @@ class PlayerScreen extends BaseScreen {
   }
 
   minimize() {
-    this.component.minimizePlayer(this.player);
+    if (this.item.track_type === "1")
+      this.component.minimizePlayer(this.player);
     this.props.navigation.goBack();
   }
 

@@ -44,6 +44,9 @@ class DisplayComponent extends BaseScreen {
       this.props.cacheFilter !== undefined ? this.props.cacheFilter : "";
     this.component = this.props.component;
     this.noCache = this.props.noCache === undefined ? false : true;
+  }
+
+  componentDidMount() {
     this.loadLists(false);
   }
 
@@ -95,8 +98,6 @@ class DisplayComponent extends BaseScreen {
           });
         }
       }
-
-      //console.log('userid- ' + this.props.userid);
 
       Api.get("load/tracks", {
         userid: this.props.userid,
@@ -330,9 +331,7 @@ class DisplayComponent extends BaseScreen {
       case "small-list":
         return this.minContent(
           <FlatList
-            keyExtractor={(item) => item.id}
             data={this.state.itemLists}
-            // style={{ flex: 1 }}
             ref="_flatList"
             onEndReachedThreshold={0.1}
             onEndReached={() => {
@@ -488,6 +487,8 @@ class DisplayComponent extends BaseScreen {
 
   displaySmallListItem(item, index) {
     let component = this;
+
+    // streamurl
     return (
       <View
         style={{
@@ -498,6 +499,10 @@ class DisplayComponent extends BaseScreen {
       >
         <TouchableOpacity
           onPress={() => {
+            // if (item.track_type === "2") {
+            //   this.openVideo(item);
+            // } else {
+
             if (this.component !== undefined) {
               this.component.updateState({ nextupModalVisible: false });
               this.component.reload(
@@ -510,6 +515,8 @@ class DisplayComponent extends BaseScreen {
             } else {
               this.play(item, this.state.type, this.state.typeId, index);
             }
+
+            // }
           }}
         >
           <View style={{ flex: 1, flexDirection: "row", padding: 10 }}>
@@ -639,7 +646,7 @@ class DisplayComponent extends BaseScreen {
                   ></Image>
                 </View>
               </View>
-              {item.track_file.endsWith("mp4") ? (
+              {item.track_type === "2" ? (
                 <Image
                   source={require("../images/icons/music_video.png")}
                   style={{ height: 20, width: 20, marginRight: 5 }}

@@ -17,7 +17,7 @@ const Api = {
       response: (response) => {
         let text = response.body;
         if (Platform.OS === "android") {
-          text = text.replace(/\r?\n/g, "").replace(/[\u0080-\uFFFF]/g, ""); // If android , I've removed unwanted chars.
+          text = text.replace(/\r?\n/g, "").replace(/[\u0080-\uFFFF]/g, "");
         }
         return JSON.parse(text);
       },

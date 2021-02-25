@@ -150,9 +150,7 @@ class BaseScreen extends Component {
           }
         }
       })
-      .catch(() => {
-        //console.log(e);
-      });
+      .catch(() => {});
   }
 
   loadDownloads() {
@@ -713,7 +711,10 @@ class BaseScreen extends Component {
   }
 
   openVideo(video) {
-    this.player.pausePlayer();
+    if (this.playing !== undefined) {
+      this.player.pausePlayer();
+    }
+
     this.props.navigation.navigate("videoPlayer", {
       video: video,
       component: this,

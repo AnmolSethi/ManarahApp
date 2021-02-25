@@ -217,7 +217,6 @@ class ExploreScreen extends BaseScreen {
           <View style={{ height: 200 }}>
             <Text style={styles.heading_text}>{"Trending Tags"}</Text>
             <FlatGrid
-              keyExtractor={(item) => item.id}
               items={this.state.tagsList}
               extraData={this.state}
               itemDimension={100}
